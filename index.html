@@ -4,18 +4,33 @@
   <meta charset="UTF-8">
   <title>تقويم البطولات 2026 - 2030</title>
   <style>
-    body { font-family: 'Cairo', sans-serif; background: #0f172a; color: white; text-align: center; padding: 20px; }
-    h1 { color: #38bdf8; }
-    .card { background: #1e293b; border-radius: 15px; padding: 20px; margin: 15px auto; width: 80%; max-width: 500px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-    .card h2 { color: #facc15; margin: 0; }
-    .card p { margin: 8px 0; }
-    .type { background: #38bdf8; color: #0f172a; padding: 4px 10px; border-radius: 20px; font-size: 14px; }
+    body { font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #0f172a, #1e293b); color: white; text-align: center; padding: 20px; }
+    h1 { color: #38bdf8; font-size: 2.5em; }
+    .controls { margin: 20px 0; }
+    input, select { padding: 10px; border-radius: 10px; border: none; margin: 5px; width: 250px; font-size: 16px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 1200px; margin: auto; }
+    .card { background: #1e293b; border-radius: 15px; padding: 20px; box-shadow: 0 4px 15px rgba(56,189,248,0.3); transition: transform 0.3s; border-top: 4px solid #38bdf8; }
+    .card:hover { transform: translateY(-5px); }
+    .card h2 { color: #facc15; margin: 0 0 10px; }
+    .type { background: #38bdf8; color: #0f172a; padding: 4px 10px; border-radius: 20px; font-size: 14px; font-weight: bold; }
+    .type.club { background: #f97316; }
+    .countdown { color: #22c55e; font-weight: bold; margin-top: 10px; }
   </style>
 </head>
 <body>
   <h1>🏆 تقويم البطولات 2026 - 2030</h1>
   <p>كل بطولات كرة القدم العالمية بمكان واحد</p>
-  <div id="tournaments"></div>
+  
+  <div class="controls">
+    <input type="text" id="search" placeholder="ابحث عن بطولة...">
+    <select id="filter">
+      <option value="all">كل البطولات</option>
+      <option value="national">منتخبات</option>
+      <option value="club">اندية</option>
+    </select>
+  </div>
+
+  <div class="grid" id="tournaments"></div>
   <p>© 2026 GoalPro | جميع الحقوق محفوظة</p>
 
 <script>
@@ -23,22 +38,51 @@ const data = [
   {"name": "كاس العالم للاندية 2026","start": "2026-12-01","end": "2026-12-20","location": "المغرب","type": "club"},
   {"name": "كاس العالم 2026","start": "2026-06-11","end": "2026-07-19","location": "الولايات المتحدة، كندا، المكسيك","type": "national"},
   {"name": "كاس اسيا 2027","start": "2027-01-15","end": "2027-02-15","location": "السعودية","type": "national"},
+  {"name": "كاس امم افريقيا 2027","start": "2027-06-20","end": "2027-07-20","location": "كينيا، اوغندا، تنزانيا","type": "national"},
   {"name": "يورو 2028","start": "2028-06-10","end": "2028-07-10","location": "انجلترا، ايرلندا، اسكتلندا، ويلز","type": "national"},
   {"name": "كوبا امريكا 2028","start": "2028-06-15","end": "2028-07-15","location": "الاكوادور","type": "national"},
-  {"name": "كاس العالم 2030","start": "2030-06-08","end": "2030-07-21","location": "المغرب، اسبانيا، البرتغال","type": "national"}
+  {"name": "الالعاب الاولمبية 2028","start": "2028-07-14","end": "2028-07-30","location": "لوس انجلوس","type": "national"},
+  {"name": "كاس القارات 2029","start": "2029-06-15","end": "2029-06-30","location": "قطر","type": "national"},
+  {"name": "كاس العالم 2030","start": "2030-06-08","end": "2030-07-21","location": "المغرب، اسبانيا، البرتغال","type": "national"},
+  {"name": "كاس العالم للاندية 2030","start": "2030-12-01","end": "2030-12-20","location": "البرازيل","type": "club"}
 ];
 
-const container = document.getElementById('tournaments');
-data.forEach(t => {
-  container.innerHTML += `
-    <div class="card">
-      <h2>${t.name}</h2>
-      <p>📅 من ${t.start} الى ${t.end}</p>
-      <p>📍 ${t.location}</p>
-      <span class="type">${t.type === 'club' ? 'اندية' : 'منتخبات'}</span>
-    </div>
-  `;
-});
+function getCountdown(date) {
+  const diff = new Date(date) - new Date();
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  return days > 0 ? `يبدأ بعد ${days} يوم` : "بدأت";
+}
+
+function displayTournaments(list) {
+  const container = document.getElementById('tournaments');
+  container.innerHTML = '';
+  list.forEach(t => {
+    container.innerHTML += `
+      <div class="card">
+        <h2>${t.name}</h2>
+        <p>📅 من ${t.start} الى ${t.end}</p>
+        <p>📍 ${t.location}</p>
+        <span class="type ${t.type}">${t.type === 'club' ? 'اندية' : 'منتخبات'}</span>
+        <p class="countdown">${getCountdown(t.start)}</p>
+      </div>
+    `;
+  });
+}
+
+function filterData() {
+  const search = document.getElementById('search').value.toLowerCase();
+  const filter = document.getElementById('filter').value;
+  const filtered = data.filter(t => 
+    t.name.toLowerCase().includes(search) && 
+    (filter === 'all' || t.type === filter)
+  );
+  displayTournaments(filtered);
+}
+
+document.getElementById('search').addEventListener('input', filterData);
+document.getElementById('filter').addEventListener('change', filterData);
+
+displayTournaments(data);
 </script>
 </body>
 </html>
