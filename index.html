@@ -2,102 +2,89 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>GoalPro - v11.0 مباريات اليوم + تنبيهات</title>
+  <title>GoalPro - v11.1 بث مباشر API</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
   <style>
     :root { --bg: #0f172a; --card: #1e293b; --text: white; --accent: #38bdf8; --live: #ef4444; --today: #22c55e; }
-    body.light { --bg: #f1f5f9; --card: white; --text: #0f172a; --accent: #0284c7; --live: #dc2626; --today: #16a34a; }
-    body { font-family: 'Cairo', sans-serif; background: var(--bg); color: var(--text); text-align: center; padding: 20px; transition: 0.3s; }
-    h1 { color: var(--accent); }
-    .tabs { display: flex; justify-content: center; gap: 10px; margin: 20px 0; }
-    .tab { padding: 12px 25px; background: var(--card); border-radius: 10px; cursor: pointer; border: 2px solid transparent; }
-    .tab.active { border: 2px solid var(--accent); color: var(--accent); }
-   .matches-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 15px; max-width: 1200px; margin: 0 auto; }
-   .match-card { background: var(--card); border-radius: 15px; padding: 15px; border-left: 5px solid var(--today); text-align: right; }
-   .match-time { background: var(--today); color: white; padding: 5px 10px; border-radius: 8px; font-weight: bold; }
-   .vs { font-size: 18px; font-weight: bold; margin: 10px 0; }
-   .notify-btn { background: var(--accent); color: var(--bg); border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; margin-top: 10px; }
+    body.light { --bg: #f1f5f9; --card: white; --text: #0f172a; }
+    body { font-family: 'Cairo', sans-serif; background: var(--bg); color: var(--text); text-align: center; padding: 20px; }
+   .tabs { display: flex; justify-content: center; gap: 10px; margin: 20px 0; }
+   .tab { padding: 12px 25px; background: var(--card); border-radius: 10px; cursor: pointer; border: 2px solid transparent; }
+   .tab.active { border: 2px solid var(--accent); color: var(--accent); }
+  .matches-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 15px; max-width: 1300px; margin: 0 auto; }
+  .match-card { background: var(--card); border-radius: 15px; padding: 15px; border-left: 5px solid var(--today); text-align: right; }
+  .score { font-size: 24px; font-weight: bold; color: var(--live); }
+  .live-dot { display: inline-block; width: 10px; height: 10px; background: var(--live); border-radius: 50%; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
   </style>
 </head>
 <body>
-  <button onclick="toggleTheme()">🌓</button>
-  <button onclick="toggleLang()">🌐</button>
-  <h1 id="title">🏆 GoalPro v11.0</h1>
+  <h1>🏆 GoalPro v11.1 - المباريات المباشرة</h1>
 
   <div class="tabs">
-    <div class="tab active" onclick="showTab('all')">📅 الكل</div>
-    <div class="tab" onclick="showTab('today')">⚡ مباريات اليوم</div>
-    <div class="tab" onclick="showTab('live')">🔴 مباشر</div>
+    <div class="tab active" onclick="loadMatches('today')">⚡ مباريات اليوم</div>
+    <div class="tab" onclick="loadMatches('live')">🔴 مباشر الان</div>
+    <div class="tab" onclick="showTab('all')">📅 150 بطولة</div>
   </div>
 
-  <div id="search-area">
-    <input type="text" id="search" placeholder="ابحث..." onkeyup="filterData()">
-  </div>
-
-  <div class="matches-grid" id="matches-today" style="display:none;"></div>
+  <div class="matches-grid" id="matches"></div>
   <div class="grid" id="tournaments"></div>
 
-  <div class="modal" id="modal"><div class="modal-content" id="modal-content"></div></div>
-
 <script>
-let lang = 'ar';
-let currentTab = 'all';
+const API_KEY = "حط_مفتاحك_هنا"; // من https://www.api-football.com
+const API_URL = "https://v3.football.api-sports.io";
 
-// مباريات اليوم مثال - تقدر تضيف اكثر
-const matchesToday = [
-  {"time": "20:00", "team1": {"ar":"مصر","en":"Egypt"}, "team2": {"ar":"المغرب","en":"Morocco"}, "tournament": {"ar":"تصفيات كاس العالم","en":"World Cup Qualifiers"}, "channel": "beIN"},
-  {"time": "22:00", "team1": {"ar":"البرازيل","en":"Brazil"}, "team2": {"ar":"الارجنتين","en":"Argentina"}, "tournament": {"ar":"كوبا امريكا","en":"Copa America"}, "channel": "SSC"}
-];
+async function loadMatches(type) {
+  document.getElementById('matches').innerHTML = "⏳ جاري التحميل...";
+  document.getElementById('tournaments').style.display = 'none';
+  document.getElementById('matches').style.display = 'grid';
 
-// ضيف هنا باقي 150 بطولة مال v10
-const data = [ /* نفس الداتا مال 150 بطولة */ ];
+  let url = "";
+  const today = new Date().toISOString().split('T')[0];
 
-function showTab(tab) {
-  currentTab = tab;
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  event.target.classList.add('active');
-  
-  if(tab === 'today') {
-    document.getElementById('tournaments').style.display = 'none';
-    document.getElementById('search-area').style.display = 'none';
-    document.getElementById('matches-today').style.display = 'grid';
-    showMatchesToday();
-  } else {
-    document.getElementById('tournaments').style.display = 'grid';
-    document.getElementById('search-area').style.display = 'block';
-    document.getElementById('matches-today').style.display = 'none';
-    filterData();
-  }
+  if(type === 'today') url = `${API_URL}/fixtures?date=${today}`;
+  if(type === 'live') url = `${API_URL}/fixtures?live=all`;
+
+  const res = await fetch(url, {
+    "method": "GET",
+    "headers": {
+      "x-apisports-key": API_KEY
+    }
+  });
+  const data = await res.json();
+
+  showMatches(data.response);
 }
 
-function showMatchesToday() {
-  document.getElementById('matches-today').innerHTML = '';
-  matchesToday.forEach(m => {
-    document.getElementById('matches-today').innerHTML += `
+function showMatches(matches) {
+  document.getElementById('matches').innerHTML = '';
+  matches.slice(0, 30).forEach(m => { // اول 30 مباراة
+    const status = m.fixture.status.short;
+    const isLive = status === '1H' || status === '2H' || status === 'ET';
+
+    document.getElementById('matches').innerHTML += `
       <div class="match-card">
-        <span class="match-time">${m.time}</span>
-        <div class="vs">${m.team1[lang]} 🆚 ${m.team2[lang]}</div>
-        <p>🏆 ${m.tournament[lang]}</p>
-        <p>📺 ${m.channel}</p>
-        <button class="notify-btn" onclick="setNotification('${m.team1[lang]} vs ${m.team2[lang]}')">🔔 ${lang==='ar'?'ذكرني':'Remind Me'}</button>
+        <p>${isLive? '<span class="live-dot"></span> مباشر' : m.fixture.date.substring(11,16)}</p>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span>${m.teams.home.name}</span>
+          <span class="score">${m.goals.home?? '-'} : ${m.goals.away?? '-'}</span>
+          <span>${m.teams.away.name}</span>
+        </div>
+        <p>🏆 ${m.league.name} - ${m.league.country}</p>
+        <p>📺 ${m.fixture.venue.name}</p>
       </div>`;
   });
 }
 
-function setNotification(match) {
-  if(Notification.permission === 'granted') {
-    new Notification('GoalPro', {body: `تذكير: ${match} بعد ساعة`});
-    alert(lang==='ar'?`تم تفعيل التنبيه لـ ${match}`:`Reminder set for ${match}`);
-  } else {
-    Notification.requestPermission().then(p => {
-      if(p === 'granted') setNotification(match);
-    });
-  }
+// ضيف هنا دالة الـ 150 بطولة القديمة
+function showTab(tab) {
+  document.getElementById('matches').style.display = 'none';
+  document.getElementById('tournaments').style.display = 'grid';
+  filterData(); // دالة البطولات القديمة
 }
 
-// باقي دوال v10: filterData, showDetails, toggleTheme... نفسها
-
-filterData();
+// شغل مباريات اليوم اول ما يفتح
+loadMatches('today');
 </script>
 </body>
 </html>
