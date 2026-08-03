@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>تقويم البطولات 2026-2030</title>
+<style>
+body{background:#0a192f;color:#fff;font-family:Arial;margin:0}
+.header{background:#112240;padding:40px;text-align:center;border-bottom:3px solid #64ffda}
+h1{color:#64ffda;margin:0}
+.container{max-width:900px;margin:30px auto;padding:20px}
+.tournament{background:#112240;margin:15px 0;padding:20px;border-radius:10px;border-right:4px solid #64ffda}
+.date{color:#8892b0}
+.loading{text-align:center;padding:50px;color:#64ffda}
+</style>
+</head>
+<body>
+<div class="header"><h1>🏆 تقويم البطولات 2026 - 2030</h1></div>
+<div class="container" id="tournaments"><p class="loading">جاري تحميل البطولات...</p></div>
+<script>
+fetch('tournaments.json').then(r=>r.json()).then(d=>{
+const c=document.getElementById('tournaments');c.innerHTML='';
+d.tournaments.forEach(t=>{c.innerHTML+=`<div class="tournament"><h2>${t.name}</h2><p class="date">📅 ${t.date_start} الى ${t.date_end}</p><p>📍 ${t.country} | 👥 ${t.teams} فريق</p></div>`})})
+</script>
+</body>
+</html>
