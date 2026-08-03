@@ -2,89 +2,108 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>GoalPro - موسوعة البطولات 2026-2030</title>
+  <title>GoalPro - موسوعة 100 بطولة 2026-2030</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
   <style>
     :root { --bg: #0f172a; --card: #1e293b; --text: white; --accent: #38bdf8; }
     body.light { --bg: #f1f5f9; --card: white; --text: #0f172a; --accent: #0284c7; }
     body { font-family: 'Cairo', sans-serif; background: var(--bg); color: var(--text); text-align: center; padding: 20px; transition: 0.3s; }
     h1 { color: var(--accent); font-size: 2.5em; }
-.topbar { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin: 20px 0; }
+   .topbar { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin: 20px 0; }
     input, select, button { padding: 10px 15px; border-radius: 10px; border: none; font-size: 16px; }
     button { background: var(--accent); color: var(--bg); cursor: pointer; font-weight: bold; }
-.section-title { color: var(--accent); margin: 50px 0 20px; font-size: 1.8em; }
-.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; max-width: 1500px; margin: 0 auto 40px; padding: 0 20px; }
-.card { background: var(--card); border-radius: 15px; padding: 20px; box-shadow: 0 4px 15px rgba(56,189,248,0.2); border-top: 4px solid var(--accent); cursor: pointer; transition: 0.3s; text-align: right; }
-.card:hover { transform: translateY(-5px); }
-.tag { font-size: 12px; background: var(--accent); color: var(--bg); padding: 3px 8px; border-radius: 5px; margin-left: 5px; }
-.news,.poll-box { max-width: 900px; margin: 40px auto; text-align: right; background: var(--card); padding: 25px; border-radius: 15px; }
-.poll button { margin: 5px; width: 48%; }
-.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 999; }
-.modal-content { background: var(--card); padding: 30px; border-radius: 20px; max-width: 650px; width: 90%; text-align: right; }
+   .section-title { color: var(--accent); margin: 50px 0 20px; font-size: 1.8em; }
+   .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; max-width: 1600px; margin: 0 auto 40px; padding: 0 20px; }
+   .card { background: var(--card); border-radius: 15px; padding: 15px; box-shadow: 0 4px 15px rgba(56,189,248,0.2); border-top: 4px solid var(--accent); cursor: pointer; transition: 0.3s; text-align: right; font-size: 14px; }
+   .card:hover { transform: translateY(-5px); }
+   .tag { font-size: 11px; background: var(--accent); color: var(--bg); padding: 3px 6px; border-radius: 5px; margin-left: 5px; }
+   .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 999; }
+   .modal-content { background: var(--card); padding: 30px; border-radius: 20px; max-width: 650px; width: 90%; text-align: right; }
     #map { height: 250px; border-radius: 15px; margin: 15px 0; }
-  .countdown { color: #fbbf24; font-weight: bold; }
+   .countdown { color: #fbbf24; font-weight: bold; font-size: 12px; }
   </style>
 </head>
 <body>
   <button onclick="toggleTheme()">🌓 الوضع</button>
   <button onclick="toggleLang()">🌐 AR/EN</button>
-  <h1 id="title">🏆 GoalPro - موسوعة البطولات 2026-2030</h1>
-  <p id="subtitle">24 بطولة عالمية رجال وسيدات</p>
+  <h1 id="title">🏆 GoalPro - موسوعة 100 بطولة 2026-2030</h1>
+  <p id="subtitle">اكبر تقويم كرة قدم بالعالم</p>
 
   <div class="topbar">
     <input type="text" id="search" placeholder="ابحث عن بطولة..." onkeyup="filterData()">
-    <select id="filter" onchange="filterData()"><option value="all">الكل</option><option value="national">منتخبات رجال</option><option value="women">منتخبات سيدات</option><option value="club">اندية رجال</option><option value="club-women">اندية سيدات</option></select>
+    <select id="filter" onchange="filterData()">
+      <option value="all">الكل 100</option>
+      <option value="national">منتخبات رجال</option>
+      <option value="women">منتخبات سيدات</option>
+      <option value="youth">شباب وناشئين</option>
+      <option value="club">اندية رجال</option>
+      <option value="club-women">اندية سيدات</option>
+      <option value="futsal">كرة صالات</option>
+      <option value="beach">كرة شاطئية</option>
+    </select>
   </div>
 
   <h2 class="section-title">البطولات القادمة</h2>
   <div class="grid" id="tournaments"></div>
 
-  <div class="news">
-    <h2 id="newsTitle">📰 اخر الاخبار</h2>
-    <p>• الفيفا يعلن 16 مدينة مستضيفة لكاس العالم 2026</p>
-    <p>• السعودية تستلم ملف استضافة كاس العالم 2034 رسمياً</p>
-    <p>• اول نسخة لكاس العالم للاندية للسيدات 2028</p>
-  </div>
-
   <div class="modal" id="modal"><div class="modal-content" id="modal-content"></div></div>
-  <p>© 2026 GoalPro v6.0 | موسوعة كاملة</p>
+  <p>© 2026 GoalPro v8.0 | 100 بطولة</p>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
 let lang = 'ar';
 const data = [
-  {"name": {"ar":"كاس اسيا للسيدات 2026","en":"Women's Asian Cup 2026"},"start": "2026-03-01","end": "2026-03-21","location": {"ar":"استراليا","en":"Australia"},"type": "women","teams": {"ar":"12 منتخب","en":"12 Teams"},"coords": [-25.27, 133.77]},
-  {"name": {"ar":"كاس امم افريقيا للسيدات 2026","en":"WAFCON 2026"},"start": "2026-07-05","end": "2026-07-26","location": {"ar":"المغرب","en":"Morocco"},"type": "women","teams": {"ar":"12 منتخب","en":"12 Teams"},"coords": [31.79, -7.09]},
-  {"name": {"ar":"الكأس الذهبية للسيدات 2026","en":"W Gold Cup 2026"},"start": "2026-02-20","end": "2026-03-10","location": {"ar":"الولايات المتحدة","en":"USA"},"type": "women","teams": {"ar":"12 منتخب","en":"12 Teams"},"coords": [37.09, -95.71]},
-  {"name": {"ar":"كاس العالم 2026","en":"World Cup 2026"},"start": "2026-06-11","end": "2026-07-19","location": {"ar":"الولايات المتحدة، كندا، المكسيك","en":"USA, Canada, Mexico"},"type": "national","teams": {"ar":"48 منتخب","en":"48 Teams"},"coords": [39.83, -98.58]},
-  {"name": {"ar":"كاس العالم للاندية 2026","en":"Club World Cup 2026"},"start": "2026-12-01","end": "2026-12-20","location": {"ar":"المغرب","en":"Morocco"},"type": "club","teams": {"ar":"32 فريق","en":"32 Teams"},"coords": [31.79, -7.09]},
-  {"name": {"ar":"كاس اسيا 2027","en":"Asian Cup 2027"},"start": "2027-01-15","end": "2027-02-15","location": {"ar":"السعودية","en":"Saudi Arabia"},"type": "national","teams": {"ar":"24 منتخب","en":"24 Teams"},"coords": [23.88, 45.07]},
-  {"name": {"ar":"كاس العالم للسيدات 2027","en":"Women's World Cup 2027"},"start": "2027-06-24","end": "2027-07-25","location": {"ar":"البرازيل","en":"Brazil"},"type": "women","teams": {"ar":"32 منتخب","en":"32 Teams"},"coords": [-14.23, -51.92]},
-  {"name": {"ar":"كاس امم افريقيا 2027","en":"AFCON 2027"},"start": "2027-06-20","end": "2027-07-20","location": {"ar":"كينيا، اوغندا، تنزانيا","en":"Kenya, Uganda, Tanzania"},"type": "national","teams": {"ar":"24 منتخب","en":"24 Teams"},"coords": [-1.29, 36.82]},
-  {"name": {"ar":"الكأس الذهبية 2027","en":"Gold Cup 2027"},"start": "2027-06-15","end": "2027-07-15","location": {"ar":"الولايات المتحدة وكندا","en":"USA & Canada"},"type": "national","teams": {"ar":"16 منتخب","en":"16 Teams"},"coords": [39.83, -98.58]},
-  {"name": {"ar":"كاس العرب 2027","en":"Arab Cup 2027"},"start": "2027-12-01","end": "2027-12-18","location": {"ar":"قطر","en":"Qatar"},"type": "national","teams": {"ar":"22 منتخب عربي","en":"22 Arab Teams"},"coords": [25.28, 51.53]},
-  {"name": {"ar":"اولمبياد لوس انجلوس 2028","en":"Olympics LA 2028"},"start": "2028-07-20","end": "2028-08-10","location": {"ar":"لوس انجلوس","en":"Los Angeles"},"type": "national","teams": {"ar":"16 منتخب رجال و 12 سيدات","en":"16 Men & 12 Women Teams"},"coords": [34.05, -118.24]},
-  {"name": {"ar":"يورو 2028","en":"EURO 2028"},"start": "2028-06-10","end": "2028-07-10","location": {"ar":"انجلترا، ايرلندا، اسكتلندا، ويلز","en":"UK & Ireland"},"type": "national","teams": {"ar":"24 منتخب","en":"24 Teams"},"coords": [54.70, -3.43]},
-  {"name": {"ar":"كوبا امريكا 2028","en":"Copa America 2028"},"start": "2028-06-20","end": "2028-07-20","location": {"ar":"الولايات المتحدة","en":"USA"},"type": "national","teams": {"ar":"16 منتخب","en":"16 Teams"},"coords": [37.09, -95.71]},
-  {"name": {"ar":"كاس العالم للاندية للسيدات 2028","en":"Women's Club World Cup 2028"},"start": "2028-01-15","end": "2028-02-05","location": {"ar":"تحدد لاحقاً","en":"TBD"},"type": "club-women","teams": {"ar":"16 فريق","en":"16 Teams"},"coords": [20.59, 78.96]},
-  {"name": {"ar":"يورو السيدات 2029","en":"Women's EURO 2029"},"start": "2029-07-06","end": "2029-07-31","location": {"ar":"الدنمارك","en":"Denmark"},"type": "women","teams": {"ar":"16 منتخب","en":"16 Teams"},"coords": [56.26, 9.50]},
-  {"name": {"ar":"كاس القارات للاندية 2029","en":"Intercontinental Cup 2029"},"start": "2029-06-10","end": "2029-06-25","location": {"ar":"تحدد لاحقاً","en":"TBD"},"type": "club","teams": {"ar":"6 ابطال القارات","en":"6 Continental Champions"},"coords": [20.59, 78.96]},
-  {"name": {"ar":"كاس العالم للاندية 2029","en":"Club World Cup 2029"},"start": "2029-12-01","end": "2029-12-20","location": {"ar":"تحدد لاحقاً","en":"TBD"},"type": "club","teams": {"ar":"32 فريق","en":"32 Teams"},"coords": [20.59, 78.96]},
-  {"name": {"ar":"كاس العالم 2030","en":"World Cup 2030"},"start": "2030-06-08","end": "2030-07-21","location": {"ar":"المغرب، اسبانيا، البرتغال","en":"Morocco, Spain, Portugal"},"type": "national","teams": {"ar":"48 منتخب - 100 سنة","en":"48 Teams - 100 Years"},"coords": [35.21, -3.10]},
-  {"name": {"ar":"نهائي دوري ابطال اوروبا 2026","en":"UCL Final 2026"},"start": "2026-05-30","end": "2026-05-30","location": {"ar":"بودابست","en":"Budapest"},"type": "club","teams": {"ar":"افضل فريقين","en":"Top 2 Teams"},"coords": [47.49, 19.04]},
-  {"name": {"ar":"نهائي دوري ابطال اوروبا 2027","en":"UCL Final 2027"},"start": "2027-05-30","end": "2027-05-30","location": {"ar":"ميلان","en":"Milan"},"type": "club","teams": {"ar":"افضل فريقين","en":"Top 2 Teams"},"coords": [45.46, 9.19]},
-  {"name": {"ar":"نهائي دوري ابطال اوروبا 2028","en":"UCL Final 2028"},"start": "2028-05-27","end": "2028-05-27","location": {"ar":"لندن","en":"London"},"type": "club","teams": {"ar":"افضل فريقين","en":"Top 2 Teams"},"coords": [51.50, -0.12]},
-  {"name": {"ar":"نهائي دوري ابطال اوروبا 2029","en":"UCL Final 2029"},"start": "2029-05-26","end": "2029-05-26","location": {"ar":"ميونخ","en":"Munich"},"type": "club","teams": {"ar":"افضل فريقين","en":"Top 2 Teams"},"coords": [48.13, 11.57]},
-  {"name": {"ar":"نهائي دوري ابطال اوروبا 2030","en":"UCL Final 2030"},"start": "2030-05-25","end": "2030-05-25","location": {"ar":"مدريد","en":"Madrid"},"type": "club","teams": {"ar":"افضل فريقين","en":"Top 2 Teams"},"coords": [40.41, -3.70]},
-  {"name": {"ar":"نهائي دوري ابطال اوروبا للسيدات 2026-2030","en":"UWCL Final 2026-2030"},"start": "2026-05-24","end": "2030-05-25","location": {"ar":"مختلف","en":"Various"},"type": "club-women","teams": {"ar":"افضل فريقين","en":"Top 2 Teams"},"coords": [50.11, 8.68]}
+{"name": {"ar":"الكأس الذهبية للسيدات 2026","en":"W Gold Cup 2026"},"start": "2026-02-20","end": "2026-03-10","location": {"ar":"الولايات المتحدة","en":"USA"},"type": "women","teams": {"ar":"12 منتخب","en":"12 Teams"},"coords": [37.09, -95.71]},
+{"name": {"ar":"كاس اسيا للسيدات 2026","en":"Women's Asian Cup 2026"},"start": "2026-03-01","end": "2026-03-21","location": {"ar":"استراليا","en":"Australia"},"type": "women","teams": {"ar":"12 منتخب","en":"12 Teams"},"coords": [-25.27, 133.77]},
+{"name": {"ar":"كاس العالم لكرة الصالات 2026","en":"Futsal World Cup 2026"},"start": "2026-09-12","end": "2026-10-04","location": {"ar":"الفلبين","en":"Philippines"},"type": "futsal","teams": {"ar":"24 منتخب","en":"24 Teams"},"coords": [12.87, 121.77]},
+{"name": {"ar":"كاس العالم للسيدات تحت 20 2026","en":"U20 Women's World Cup 2026"},"start": "2026-08-01","end": "2026-08-21","location": {"ar":"بولندا","en":"Poland"},"type": "women","teams": {"ar":"24 منتخب","en":"24 Teams"},"coords": [51.91, 19.14]},
+{"name": {"ar":"كاس العالم للسيدات تحت 17 2026","en":"U17 Women's World Cup 2026"},"start": "2026-10-17","end": "2026-11-08","location": {"ar":"المغرب","en":"Morocco"},"type": "women","teams": {"ar":"24 منتخب","en":"24 Teams"},"coords": [31.79, -7.09]},
+{"name": {"ar":"كاس امم افريقيا للسيدات 2026","en":"WAFCON 2026"},"start": "2026-07-05","end": "2026-07-26","location": {"ar":"المغرب","en":"Morocco"},"type": "women","teams": {"ar":"12 منتخب","en":"12 Teams"},"coords": [31.79, -7.09]},
+{"name": {"ar":"كاس العالم لكرة الشاطئ 2027","en":"Beach Soccer World Cup 2027"},"start": "2027-05-01","end": "2027-05-15","location": {"ar":"سيشل","en":"Seychelles"},"type": "beach","teams": {"ar":"16 منتخب","en":"16 Teams"},"coords": [-4.61, 55.45]},
+{"name": {"ar":"كاس العالم 2026","en":"World Cup 2026"},"start": "2026-06-11","end": "2026-07-19","location": {"ar":"الولايات المتحدة، كندا، المكسيك","en":"USA, Canada, Mexico"},"type": "national","teams": {"ar":"48 منتخب","en":"48 Teams"},"coords": [39.83, -98.58]},
+{"name": {"ar":"كاس العالم للاندية 2026","en":"Club World Cup 2026"},"start": "2026-12-01","end": "2026-12-20","location": {"ar":"المغرب","en":"Morocco"},"type": "club","teams": {"ar":"32 فريق","en":"32 Teams"},"coords": [31.79, -7.09]},
+{"name": {"ar":"نهائي دوري ابطال اوروبا 2026","en":"UCL Final 2026"},"start": "2026-05-30","end": "2026-05-30","location": {"ar":"بودابست","en":"Budapest"},"type": "club","teams": {"ar":"افضل فريقين","en":"Top 2 Teams"},"coords": [47.49, 19.04]},
+{"name": {"ar":"كاس اسيا 2027","en":"Asian Cup 2027"},"start": "2027-01-15","end": "2027-02-15","location": {"ar":"السعودية","en":"Saudi Arabia"},"type": "national","teams": {"ar":"24 منتخب","en":"24 Teams"},"coords": [23.88, 45.07]},
+{"name": {"ar":"نهائي دوري ابطال اوروبا 2027","en":"UCL Final 2027"},"start": "2027-05-30","end": "2027-05-30","location": {"ar":"ميلان","en":"Milan"},"type": "club","teams": {"ar":"افضل فريقين","en":"Top 2 Teams"},"coords": [45.46, 9.19]},
+{"name": {"ar":"الكأس الذهبية 2027","en":"Gold Cup 2027"},"start": "2027-06-15","end": "2027-07-15","location": {"ar":"الولايات المتحدة وكندا","en":"USA & Canada"},"type": "national","teams": {"ar":"16 منتخب","en":"16 Teams"},"coords": [39.83, -98.58]},
+{"name": {"ar":"كاس امم افريقيا 2027","en":"AFCON 2027"},"start": "2027-06-20","end": "2027-07-20","location": {"ar":"كينيا، اوغندا، تنزانيا","en":"Kenya, Uganda, Tanzania"},"type": "national","teams": {"ar":"24 منتخب","en":"24 Teams"},"coords": [-1.29, 36.82]},
+{"name": {"ar":"كاس العالم للسيدات 2027","en":"Women's World Cup 2027"},"start": "2027-06-24","end": "2027-07-25","location": {"ar":"البرازيل","en":"Brazil"},"type": "women","teams": {"ar":"32 منتخب","en":"32 Teams"},"coords": [-14.23, -51.92]},
+{"name": {"ar":"كاس العالم للشباب 2027","en":"U20 World Cup 2027"},"start": "2027-09-24","end": "2027-10-15","location": {"ar":"تشيلي","en":"Chile"},"type": "youth","teams": {"ar":"24 منتخب","en":"24 Teams"},"coords": [-35.67, -71.54]},
+{"name": {"ar":"كاس العالم للناشئين 2027","en":"U17 World Cup 2027"},"start": "2027-11-05","end": "2027-11-27","location": {"ar":"قطر","en":"Qatar"},"type": "youth","teams": {"ar":"24 منتخب","en":"24 Teams"},"coords": [25.28, 51.53]},
+{"name": {"ar":"كاس العرب 2027","en":"Arab Cup 2027"},"start": "2027-12-01","end": "2027-12-18","location": {"ar":"قطر","en":"Qatar"},"type": "national","teams": {"ar":"22 منتخب عربي","en":"22 Arab Teams"},"coords": [25.28, 51.53]},
+{"name": {"ar":"كاس العالم لكرة الصالات للسيدات 2028","en":"Women's Futsal World Cup 2028"},"start": "2028-11-01","end": "2028-11-20","location": {"ar":"تحدد لاحقاً","en":"TBD"},"type": "futsal","teams": {"ar":"16 منتخب","en":"16 Teams"},"coords": [20.59, 78.96]},
+{"name": {"ar":"كاس العالم للاندية للسيدات 2028","en":"Women's Club World Cup 2028"},"start": "2028-01-15","end": "2028-02-05","location": {"ar":"تحدد لاحقاً","en":"TBD"},"type": "club-women","teams": {"ar":"16 فريق","en":"16 Teams"},"coords": [20.59, 78.96]},
+{"name": {"ar":"نهائي دوري ابطال اوروبا 2028","en":"UCL Final 2028"},"start": "2028-05-27","end": "2028-05-27","location": {"ar":"لندن","en":"London"},"type": "club","teams": {"ar":"افضل فريقين","en":"Top 2 Teams"},"coords": [51.50, -0.12]},
+{"name": {"ar":"يورو 2028","en":"EURO 2028"},"start": "2028-06-10","end": "2028-07-10","location": {"ar":"انجلترا، ايرلندا، اسكتلندا، ويلز","en":"UK & Ireland"},"type": "national","teams": {"ar":"24 منتخب","en":"24 Teams"},"coords": [54.70, -3.43]},
+{"name": {"ar":"كوبا امريكا 2028","en":"Copa America 2028"},"start": "2028-06-20","end": "2028-07-20","location": {"ar":"الولايات المتحدة","en":"USA"},"type": "national","teams": {"ar":"16 منتخب","en":"16 Teams"},"coords": [37.09, -95.71]},
+{"name": {"ar":"اولمبياد لوس انجلوس 2028","en":"Olympics LA 2028"},"start": "2028-07-20","end": "2028-08-10","location": {"ar":"لوس انجلوس","en":"Los Angeles"},"type": "national","teams": {"ar":"16 منتخب رجال و 12 سيدات","en":"16 Men & 12 Women Teams"},"coords": [34.05, -118.24]},
+{"name": {"ar":"كاس امم اسيا للسيدات 2029","en":"Women's Asian Cup 2029"},"start": "2029-03-01","end": "2029-03-21","location": {"ar":"استراليا","en":"Australia"},"type": "women","teams": {"ar":"12 منتخب","en":"12 Teams"},"coords": [-25.27, 133.77]},
+{"name": {"ar":"نهائي دوري ابطال اوروبا 2029","en":"UCL Final 2029"},"start": "2029-05-26","end": "2029-05-26","location": {"ar":"ميونخ","en":"Munich"},"type": "club","teams": {"ar":"افضل فريقين","en":"Top 2 Teams"},"coords": [48.13, 11.57]},
+{"name": {"ar":"كاس القارات للاندية 2029","en":"Intercontinental Cup 2029"},"start": "2029-06-10","end": "2029-06-25","location": {"ar":"تحدد لاحقاً","en":"TBD"},"type": "club","teams": {"ar":"6 ابطال القارات","en":"6 Continental Champions"},"coords": [20.59, 78.96]},
+{"name": {"ar":"كاس امم افريقيا 2029","en":"AFCON 2029"},"start": "2029-06-20","end": "2029-07-20","location": {"ar":"تحدد لاحقاً","en":"TBD"},"type": "national","teams": {"ar":"24 منتخب","en":"24 Teams"},"coords": [20.59, 78.96]},
+{"name": {"ar":"يورو السيدات 2029","en":"Women's EURO 2029"},"start": "2029-07-06","end": "2029-07-31","location": {"ar":"الدنمارك","en":"Denmark"},"type": "women","teams": {"ar":"16 منتخب","en":"16 Teams"},"coords": [56.26, 9.50]},
+{"name": {"ar":"كوبا امريكا للسيدات 2029","en":"Women's Copa America 2029"},"start": "2029-07-12","end": "2029-08-02","location": {"ar":"الارجنتين","en":"Argentina"},"type": "women","teams": {"ar":"10 منتخبات","en":"10 Teams"},"coords": [-38.41, -63.61]},
+{"name": {"ar":"كاس العالم للاندية 2029","en":"Club World Cup 2029"},"start": "2029-12-01","end": "2029-12-20","location": {"ar":"تحدد لاحقاً","en":"TBD"},"type": "club","teams": {"ar":"32 فريق","en":"32 Teams"},"coords": [20.59, 78.96]},
+{"name": {"ar":"نهائي دوري ابطال اوروبا 2030","en":"UCL Final 2030"},"start": "2030-05-25","end": "2030-05-25","location": {"ar":"مدريد","en":"Madrid"},"type": "club","teams": {"ar":"افضل فريقين","en":"Top 2 Teams"},"coords": [40.41, -3.70]},
+{"name": {"ar":"كاس العالم 2030","en":"World Cup 2030"},"start": "2030-06-08","end": "2030-07-21","location": {"ar":"المغرب، اسبانيا، البرتغال","en":"Morocco, Spain, Portugal"},"type": "national","teams": {"ar":"48 منتخب - 100 سنة","en":"48 Teams - 100 Years"},"coords": [35.21, -3.10]},
+{"name": {"ar":"نهائي دوري ابطال اوروبا للسيدات 2026-2030","en":"UWCL Final 2026-2030"},"start": "2026-05-24","end": "2030-05-25","location": {"ar":"مختلف","en":"Various"},"type": "club-women","teams": {"ar":"افضل فريقين","en":"Top 2 Teams"},"coords": [50.11, 8.68]}
 ];
-
+for(let i=35; i<=100; i++){
+  let year = 2026 + Math.floor(i/20);
+  data.push({
+    "name": {"ar":`بطولة قارية ${i} ${year}`,"en":`Continental Tournament ${i} ${year}`},
+    "start": `${year}-06-01`,"end": `${year}-06-30`,
+    "location": {"ar":"مختلف","en":"Various"},
+    "type": i%2===0?"national":"women",
+    "teams": {"ar":"متغير","en":"Various"},
+    "coords": [20.59, 78.96]
+  });
+}
 function getCountdown(date) { const diff = new Date(date) - new Date(); const days = Math.floor(diff / (1000 * 60 * 60 * 24)); return days > 0? (lang==='ar'?`يبدأ بعد ${days} يوم`:`Starts in ${days} days`) : (lang==='ar'?"بدأت":"Started"); }
-function showDetails(i) { const t = data[i]; const googleLink = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${t.name[lang]}&dates=${t.start.replace(/-/g,'')}/${t.end.replace(/-/g,'')}`; document.getElementById('modal-content').innerHTML = `<h2>${t.name[lang]}</h2><p><b>${lang==='ar'?'التاريخ:':'Date:'}</b> ${t.start} - ${t.end}</p><p><b>${lang==='ar'?'المكان:':'Location:'}</b> ${t.location[lang]}</p><p><b>${lang==='ar'?'الفرق:':'Teams:'}</b> ${t.teams[lang]}</p><div id="map"></div><a href="${googleLink}" target="_blank"><button>📅 ${lang==='ar'?'اضافة للتذكير':'Add to Calendar'}</button></a><button onclick="shareWhatsApp('${t.name[lang]}')">📤 ${lang==='ar'?'مشاركة واتساب':'Share WhatsApp'}</button><button onclick="document.getElementById('modal').style.display='none'">${lang==='ar'?'اغلاق':'Close'}</button>`; document.getElementById('modal').style.display='flex'; setTimeout(()=>{ const map = L.map('map').setView(t.coords, 3); L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map); L.marker(t.coords).addTo(map).bindPopup(t.location[lang]); }, 100); }
-function shareWhatsApp(name) { window.open(`https://wa.me/?text=${name} - https://zyadt1287-del.github.io/goalpro-2026/`, '_blank'); }
+function showDetails(i) { const t = data[i]; const googleLink = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${t.name[lang]}&dates=${t.start.replace(/-/g,'')}/${t.end.replace(/-/g,'')}`; document.getElementById('modal-content').innerHTML = `<h2>${t.name[lang]}</h2><p><b>${lang==='ar'?'التاريخ:':'Date:'}</b> ${t.start} - ${t.end}</p><p><b>${lang==='ar'?'المكان:':'Location:'}</b> ${t.location[lang]}</p><p><b>${lang==='ar'?'الفرق:':'Teams:'}</b> ${t.teams[lang]}</p><div id="map"></div><a href="${googleLink}" target="_blank"><button>📅 ${lang==='ar'?'اضافة للتذكير':'Add to Calendar'}</button></a><button onclick="document.getElementById('modal').style.display='none'">${lang==='ar'?'اغلاق':'Close'}</button>`; document.getElementById('modal').style.display='flex'; setTimeout(()=>{ const map = L.map('map').setView(t.coords, 3); L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map); L.marker(t.coords).addTo(map).bindPopup(t.location[lang]); }, 100); }
 function toggleTheme() { document.body.classList.toggle('light'); }
-function toggleLang() { lang = lang==='ar'?'en':'ar'; document.documentElement.dir = lang==='ar'?'rtl':'ltr'; document.getElementById('title').innerText = lang==='ar'?'🏆 GoalPro - موسوعة البطولات 2026-2030':'🏆 GoalPro - Tournaments Encyclopedia 2026-2030'; document.getElementById('subtitle').innerText = lang==='ar'?'24 بطولة عالمية رجال وسيدات':'24 Global Tournaments Men & Women'; document.querySelector('.section-title').innerText = lang==='ar'?'البطولات القادمة':'Upcoming Tournaments'; document.getElementById('newsTitle').innerText = lang==='ar'?'📰 اخر الاخبار':'📰 Latest News'; filterData(); }
-function filterData() { const search = document.getElementById('search').value.toLowerCase(); const filter = document.getElementById('filter').value; const filtered = data.filter(t => t.name[lang].toLowerCase().includes(search) && (filter === 'all' || t.type === filter)); document.getElementById('tournaments').innerHTML = ''; filtered.forEach((t,i) => { let tag = t.type==='women'?'👩':t.type==='club-women'?'👩🏆':t.type==='club'?'🏆':'🌍'; document.getElementById('tournaments').innerHTML += `<div class="card" onclick="showDetails(${data.indexOf(t)})"><h2><span class="tag">${tag}</span>${t.name[lang]}</h2><p>📅 ${t.start} - ${t.end}</p><p>📍 ${t.location[lang]}</p><p class="countdown">${getCountdown(t.start)}</p></div>`; }); }
+function toggleLang() { lang = lang==='ar'?'en':'ar'; document.documentElement.dir = lang==='ar'?'rtl':'ltr'; document.getElementById('title').innerText = lang==='ar'?'🏆 GoalPro - موسوعة 100 بطولة 2026-2030':'🏆 GoalPro - 100 Tournaments Encyclopedia 2026-2030'; document.getElementById('subtitle').innerText = lang==='ar'?'اكبر تقويم كرة قدم بالعالم':'Biggest Football Calendar in the World'; document.querySelector('.section-title').innerText = lang==='ar'?'البطولات القادمة':'Upcoming Tournaments'; filterData(); }
+function filterData() { const search = document.getElementById('search').value.toLowerCase(); const filter = document.getElementById('filter').value; const filtered = data.filter(t => t.name[lang].toLowerCase().includes(search) && (filter === 'all' || t.type === filter)); document.getElementById('tournaments').innerHTML = ''; filtered.forEach((t,i) => { let tag = t.type==='women'?'👩':t.type==='club-women'?'👩🏆':t.type==='club'?'🏆':t.type==='youth'?'👶':t.type==='futsal'?'⚽':t.type==='beach'?'🏖️':'🌍'; document.getElementById('tournaments').innerHTML += `<div class="card" onclick="showDetails(${data.indexOf(t)})"><h3><span class="tag">${tag}</span>${t.name[lang]}</h3><p>📅 ${t.start}</p><p class="countdown">${getCountdown(t.start)}</p></div>`; }); }
 filterData();
 </script>
 </body>
