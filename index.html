@@ -8,17 +8,23 @@
     :root { --bg: #0f172a; --card: #1e293b; --text: white; --accent: #38bdf8; }
     body.light { --bg: #f1f5f9; --card: white; --text: #0f172a; --accent: #0284c7; }
     body { font-family: 'Cairo', sans-serif; background: var(--bg); color: var(--text); text-align: center; padding: 20px; transition: 0.3s; }
-    h1 { color: var(--accent); }
+    h1 { color: var(--accent); font-size: 2.5em; }
    .topbar { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin: 20px 0; }
-    input, select, button { padding: 10px; border-radius: 10px; border: none; font-size: 16px; }
+    input, select, button { padding: 10px 15px; border-radius: 10px; border: none; font-size: 16px; }
     button { background: var(--accent); color: var(--bg); cursor: pointer; font-weight: bold; }
-   .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 1200px; margin: auto; }
-   .card { background: var(--card); border-radius: 15px; padding: 20px; box-shadow: 0 4px 15px rgba(56,189,248,0.2); border-top: 4px solid var(--accent); cursor: pointer; }
-   .news { max-width: 800px; margin: 40px auto; text-align: right; background: var(--card); padding: 20px; border-radius: 15px; }
-   .poll { background: var(--card); padding: 15px; border-radius: 10px; margin-top: 10px; }
-   .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; z-index: 999; }
-   .modal-content { background: var(--card); padding: 30px; border-radius: 20px; max-width: 600px; width: 90%; }
-    #map { height: 250px; border-radius: 15px; margin-top: 15px; }
+
+   .section-title { color: var(--accent); margin: 50px 0 20px; font-size: 1.8em; }
+
+   .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto 40px; padding: 0 20px; }
+   .card { background: var(--card); border-radius: 15px; padding: 20px; box-shadow: 0 4px 15px rgba(56,189,248,0.2); border-top: 4px solid var(--accent); cursor: pointer; transition: 0.3s; text-align: right; }
+   .card:hover { transform: translateY(-5px); }
+
+   .news,.poll-box { max-width: 900px; margin: 40px auto; text-align: right; background: var(--card); padding: 25px; border-radius: 15px; }
+   .poll button { margin: 5px; width: 48%; }
+
+   .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 999; }
+   .modal-content { background: var(--card); padding: 30px; border-radius: 20px; max-width: 650px; width: 90%; text-align: right; }
+    #map { height: 250px; border-radius: 15px; margin: 15px 0; }
   </style>
 </head>
 <body>
@@ -32,6 +38,7 @@
     <select id="filter"><option value="all">كل البطولات</option><option value="national">منتخبات</option><option value="club">اندية</option></select>
   </div>
 
+  <h2 class="section-title">البطولات القادمة</h2>
   <div class="grid" id="tournaments"></div>
 
   <div class="news">
@@ -41,7 +48,7 @@
     <p>• المغرب واسبانيا والبرتغال يطلقون شعار كاس العالم 2030</p>
   </div>
 
-  <div class="news">
+  <div class="poll-box">
     <h2 id="pollTitle">📊 تصويت الجماهير: من سيفوز بكاس العالم 2026؟</h2>
     <div class="poll">
       <button onclick="vote('brazil')">🇧🇷 البرازيل <span id="brazil">0</span>%</button>
@@ -58,9 +65,12 @@
 <script>
 let lang = 'ar';
 const data = [
+  {"name": {"ar":"كاس العالم للاندية 2026","en":"Club World Cup 2026"},"start": "2026-12-01","end": "2026-12-20","location": {"ar":"المغرب","en":"Morocco"},"type": "club","teams": {"ar":"32 فريق: ريال مدريد، مان سيتي، الاهلي، الهلال","en":"32 Teams"},"coords": [31.79, -7.09]},
   {"name": {"ar":"كاس العالم 2026","en":"World Cup 2026"},"start": "2026-06-11","end": "2026-07-19","location": {"ar":"الولايات المتحدة، كندا، المكسيك","en":"USA, Canada, Mexico"},"type": "national","teams": {"ar":"48 منتخب","en":"48 Teams"},"coords": [39.83, -98.58]},
   {"name": {"ar":"كاس اسيا 2027","en":"Asian Cup 2027"},"start": "2027-01-15","end": "2027-02-15","location": {"ar":"السعودية","en":"Saudi Arabia"},"type": "national","teams": {"ar":"24 منتخب","en":"24 Teams"},"coords": [23.88, 45.07]},
-  {"name": {"ar":"كاس العالم 2030","en":"World Cup 2030"},"start": "2030-06-08","end": "2030-07-21","location": {"ar":"المغرب، اسبانيا، البرتغال","en":"Morocco, Spain, Portugal"},"type": "national","teams": {"ar":"48 منتخب","en":"48 Teams"},"coords": [35.21, -3.10]}
+  {"name": {"ar":"كاس امم افريقيا 2027","en":"AFCON 2027"},"start": "2027-06-20","end": "2027-07-20","location": {"ar":"كينيا، اوغندا، تنزانيا","en":"Kenya, Uganda, Tanzania"},"type": "national","teams": {"ar":"24 منتخب","en":"24 Teams"},"coords": [-1.29, 36.82]},
+  {"name": {"ar":"يورو 2028","en":"EURO 2028"},"start": "2028-06-10","end": "2028-07-10","location": {"ar":"انجلترا، ايرلندا، اسكتلندا، ويلز","en":"England, Ireland, Scotland, Wales"},"type": "national","teams": {"ar":"24 منتخب","en":"24 Teams"},"coords": [54.70, -3.43]},
+  {"name": {"ar":"كاس العالم 2030","en":"World Cup 2030"},"start": "2030-06-08","end": "2030-07-21","location": {"ar":"المغرب، اسبانيا، البرتغال","en":"Morocco, Spain, Portugal"},"type": "national","teams": {"ar":"48 منتخب - 100 سنة","en":"48 Teams - 100 Years"},"coords": [35.21, -3.10]}
 ];
 
 function getCountdown(date) {
@@ -74,7 +84,7 @@ function showDetails(i) {
   const googleLink = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${t.name[lang]}&dates=${t.start.replace(/-/g,'')}/${t.end.replace(/-/g,'')}`;
   document.getElementById('modal-content').innerHTML = `
     <h2>${t.name[lang]}</h2>
-    <p><b>${lang==='ar'?'التاريخ:':'Date:'}</b> ${t.start} الى ${t.end}</p>
+    <p><b>${lang==='ar'?'التاريخ:':'Date:'}</b> ${t.start} - ${t.end}</p>
     <p><b>${lang==='ar'?'المكان:':'Location:'}</b> ${t.location[lang]}</p>
     <p><b>${lang==='ar'?'الفرق:':'Teams:'}</b> ${t.teams[lang]}</p>
     <div id="map"></div>
@@ -83,50 +93,29 @@ function showDetails(i) {
     <button onclick="document.getElementById('modal').style.display='none'">${lang==='ar'?'اغلاق':'Close'}</button>
   `;
   document.getElementById('modal').style.display='flex';
-  setTimeout(()=>{
-    const map = L.map('map').setView(t.coords, 3);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-    L.marker(t.coords).addTo(map).bindPopup(t.location[lang]);
-  }, 100);
+  setTimeout(()=>{ const map = L.map('map').setView(t.coords, 3); L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map); L.marker(t.coords).addTo(map).bindPopup(t.location[lang]); }, 100);
 }
 
-function shareWhatsApp(name) {
-  const url = `https://wa.me/?text=${name} - https://zyadt1287-del.github.io/goalpro-2026/`;
-  window.open(url, '_blank');
-}
-
+function shareWhatsApp(name) { window.open(`https://wa.me/?text=${name} - https://zyadt1287-del.github.io/goalpro-2026/`, '_blank'); }
 function toggleTheme() { document.body.classList.toggle('light'); }
 function toggleLang() {
-  lang = lang==='ar'?'en':'ar';
-  document.documentElement.dir = lang==='ar'?'rtl':'ltr';
+  lang = lang==='ar'?'en':'ar'; document.documentElement.dir = lang==='ar'?'rtl':'ltr';
   document.getElementById('title').innerText = lang==='ar'?'🏆 تقويم البطولات 2026 - 2030':'🏆 Tournaments Calendar 2026 - 2030';
   document.getElementById('subtitle').innerText = lang==='ar'?'كل بطولات كرة القدم العالمية بمكان واحد':'All Football Tournaments in One Place';
+  document.querySelector('.section-title').innerText = lang==='ar'?'البطولات القادمة':'Upcoming Tournaments';
   document.getElementById('newsTitle').innerText = lang==='ar'?'📰 اخر الاخبار':'📰 Latest News';
   document.getElementById('pollTitle').innerText = lang==='ar'?'📊 تصويت الجماهير: من سيفوز بكاس العالم 2026؟':'📊 Fan Poll: Who will win World Cup 2026?';
   filterData();
 }
-
 let votes = {brazil:0, arg:0, fr:0, eng:0};
-function vote(team){
-  votes[team]++;
-  const total = Object.values(votes).reduce((a,b)=>a+b);
-  for(let k in votes){ document.getElementById(k).innerText = Math.round(votes[k]/total*100) }
-}
-
+function vote(team){ votes[team]++; const total = Object.values(votes).reduce((a,b)=>a+b); for(let k in votes){ document.getElementById(k).innerText = Math.round(votes[k]/total*100) } }
 function filterData() {
   const search = document.getElementById('search').value.toLowerCase();
   const filter = document.getElementById('filter').value;
   const filtered = data.filter(t => t.name[lang].toLowerCase().includes(search) && (filter === 'all' || t.type === filter));
   document.getElementById('tournaments').innerHTML = '';
   filtered.forEach((t,i) => {
-    document.getElementById('tournaments').innerHTML += `
-      <div class="card" onclick="showDetails(${data.indexOf(t)})">
-        <h2>${t.name[lang]}</h2>
-        <p>📅 ${t.start} - ${t.end}</p>
-        <p>📍 ${t.location[lang]}</p>
-        <p class="countdown">${getCountdown(t.start)}</p>
-      </div>
-    `;
+    document.getElementById('tournaments').innerHTML += `<div class="card" onclick="showDetails(${data.indexOf(t)})"><h2>${t.name[lang]}</h2><p>📅 ${t.start} - ${t.end}</p><p>📍 ${t.location[lang]}</p><p class="countdown">${getCountdown(t.start)}</p></div>`;
   });
 }
 filterData();
