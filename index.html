@@ -4,47 +4,51 @@
   <meta charset="UTF-8">
   <title>تقويم البطولات 2026 - 2030</title>
   <style>
-    body { font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #0f172a, #1e293b); color: white; text-align: center; padding: 20px; }
-    h1 { color: #38bdf8; font-size: 2.5em; }
-    .controls { margin: 20px 0; }
-    input, select { padding: 10px; border-radius: 10px; border: none; margin: 5px; width: 250px; font-size: 16px; }
+    :root { --bg: #0f172a; --card: #1e293b; --text: white; --accent: #38bdf8; }
+    body.light { --bg: #f1f5f9; --card: white; --text: #0f172a; --accent: #0284c7; }
+    body { font-family: 'Cairo', sans-serif; background: var(--bg); color: var(--text); text-align: center; padding: 20px; transition: 0.3s; }
+    h1 { color: var(--accent); font-size: 2.5em; }
+    .topbar { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin: 20px 0; }
+    input, select, button { padding: 10px; border-radius: 10px; border: none; font-size: 16px; }
+    button { background: var(--accent); color: var(--bg); cursor: pointer; font-weight: bold; }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 1200px; margin: auto; }
-    .card { background: #1e293b; border-radius: 15px; padding: 20px; box-shadow: 0 4px 15px rgba(56,189,248,0.3); transition: transform 0.3s; border-top: 4px solid #38bdf8; }
-    .card:hover { transform: translateY(-5px); }
-    .card h2 { color: #facc15; margin: 0 0 10px; }
-    .type { background: #38bdf8; color: #0f172a; padding: 4px 10px; border-radius: 20px; font-size: 14px; font-weight: bold; }
+    .card { background: var(--card); border-radius: 15px; padding: 20px; box-shadow: 0 4px 15px rgba(56,189,248,0.2); border-top: 4px solid var(--accent); cursor: pointer; transition: 0.3s; }
+    .card:hover { transform: scale(1.03); }
+    .type { background: var(--accent); color: var(--bg); padding: 4px 10px; border-radius: 20px; font-weight: bold; }
     .type.club { background: #f97316; }
     .countdown { color: #22c55e; font-weight: bold; margin-top: 10px; }
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; }
+    .modal-content { background: var(--card); padding: 30px; border-radius: 20px; max-width: 500px; }
   </style>
 </head>
 <body>
+  <button onclick="toggleTheme()">🌓 تبديل الوضع</button>
   <h1>🏆 تقويم البطولات 2026 - 2030</h1>
   <p>كل بطولات كرة القدم العالمية بمكان واحد</p>
   
-  <div class="controls">
+  <div class="topbar">
     <input type="text" id="search" placeholder="ابحث عن بطولة...">
-    <select id="filter">
-      <option value="all">كل البطولات</option>
-      <option value="national">منتخبات</option>
-      <option value="club">اندية</option>
-    </select>
+    <select id="filter"><option value="all">كل البطولات</option><option value="national">منتخبات</option><option value="club">اندية</option></select>
+    <button onclick="shareSite()">📤 مشاركة</button>
   </div>
 
   <div class="grid" id="tournaments"></div>
+  
+  <div class="modal" id="modal"><div class="modal-content" id="modal-content"></div></div>
   <p>© 2026 GoalPro | جميع الحقوق محفوظة</p>
 
 <script>
 const data = [
-  {"name": "كاس العالم للاندية 2026","start": "2026-12-01","end": "2026-12-20","location": "المغرب","type": "club"},
-  {"name": "كاس العالم 2026","start": "2026-06-11","end": "2026-07-19","location": "الولايات المتحدة، كندا، المكسيك","type": "national"},
-  {"name": "كاس اسيا 2027","start": "2027-01-15","end": "2027-02-15","location": "السعودية","type": "national"},
-  {"name": "كاس امم افريقيا 2027","start": "2027-06-20","end": "2027-07-20","location": "كينيا، اوغندا، تنزانيا","type": "national"},
-  {"name": "يورو 2028","start": "2028-06-10","end": "2028-07-10","location": "انجلترا، ايرلندا، اسكتلندا، ويلز","type": "national"},
-  {"name": "كوبا امريكا 2028","start": "2028-06-15","end": "2028-07-15","location": "الاكوادور","type": "national"},
-  {"name": "الالعاب الاولمبية 2028","start": "2028-07-14","end": "2028-07-30","location": "لوس انجلوس","type": "national"},
-  {"name": "كاس القارات 2029","start": "2029-06-15","end": "2029-06-30","location": "قطر","type": "national"},
-  {"name": "كاس العالم 2030","start": "2030-06-08","end": "2030-07-21","location": "المغرب، اسبانيا، البرتغال","type": "national"},
-  {"name": "كاس العالم للاندية 2030","start": "2030-12-01","end": "2030-12-20","location": "البرازيل","type": "club"}
+  {"name": "كاس العالم للاندية 2026","start": "2026-12-01","end": "2026-12-20","location": "المغرب","type": "club","teams": "32 فريق من كل القارات"},
+  {"name": "كاس العالم 2026","start": "2026-06-11","end": "2026-07-19","location": "الولايات المتحدة، كندا، المكسيك","type": "national","teams": "48 منتخب"},
+  {"name": "كاس اسيا 2027","start": "2027-01-15","end": "2027-02-15","location": "السعودية","type": "national","teams": "24 منتخب"},
+  {"name": "كاس امم افريقيا 2027","start": "2027-06-20","end": "2027-07-20","location": "كينيا، اوغندا، تنزانيا","type": "national","teams": "24 منتخب"},
+  {"name": "يورو 2028","start": "2028-06-10","end": "2028-07-10","location": "انجلترا، ايرلندا، اسكتلندا، ويلز","type": "national","teams": "24 منتخب"},
+  {"name": "كوبا امريكا 2028","start": "2028-06-15","end": "2028-07-15","location": "الاكوادور","type": "national","teams": "16 منتخب"},
+  {"name": "الالعاب الاولمبية 2028","start": "2028-07-14","end": "2028-07-30","location": "لوس انجلوس","type": "national","teams": "16 منتخب تحت 23"},
+  {"name": "كاس القارات 2029","start": "2029-06-15","end": "2029-06-30","location": "قطر","type": "national","teams": "8 منتخبات ابطال القارات"},
+  {"name": "كاس العالم 2030","start": "2030-06-08","end": "2030-07-21","location": "المغرب، اسبانيا، البرتغال","type": "national","teams": "48 منتخب - 100 سنة على اول نسخة"},
+  {"name": "كاس العالم للاندية 2030","start": "2030-12-01","end": "2030-12-20","location": "البرازيل","type": "club","teams": "32 فريق"}
 ];
 
 function getCountdown(date) {
@@ -56,9 +60,9 @@ function getCountdown(date) {
 function displayTournaments(list) {
   const container = document.getElementById('tournaments');
   container.innerHTML = '';
-  list.forEach(t => {
+  list.forEach((t,i) => {
     container.innerHTML += `
-      <div class="card">
+      <div class="card" onclick="showDetails(${i})">
         <h2>${t.name}</h2>
         <p>📅 من ${t.start} الى ${t.end}</p>
         <p>📍 ${t.location}</p>
@@ -69,19 +73,30 @@ function displayTournaments(list) {
   });
 }
 
+function showDetails(i) {
+  const t = data[i];
+  document.getElementById('modal-content').innerHTML = `
+    <h2>${t.name}</h2>
+    <p><b>التاريخ:</b> ${t.start} الى ${t.end}</p>
+    <p><b>المكان:</b> ${t.location}</p>
+    <p><b>عدد الفرق:</b> ${t.teams}</p>
+    <button onclick="document.getElementById('modal').style.display='none'">اغلاق</button>
+  `;
+  document.getElementById('modal').style.display='flex';
+}
+
 function filterData() {
   const search = document.getElementById('search').value.toLowerCase();
   const filter = document.getElementById('filter').value;
-  const filtered = data.filter(t => 
-    t.name.toLowerCase().includes(search) && 
-    (filter === 'all' || t.type === filter)
-  );
+  const filtered = data.filter(t => t.name.toLowerCase().includes(search) && (filter === 'all' || t.type === filter));
   displayTournaments(filtered);
 }
 
+function toggleTheme() { document.body.classList.toggle('light'); }
+function shareSite() { navigator.clipboard.writeText('https://zyadt1287-del.github.io/goalpro-2026/'); alert('تم نسخ رابط الموقع!'); }
+
 document.getElementById('search').addEventListener('input', filterData);
 document.getElementById('filter').addEventListener('change', filterData);
-
 displayTournaments(data);
 </script>
 </body>
