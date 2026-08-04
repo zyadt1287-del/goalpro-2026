@@ -1,90 +1,68 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8">
-  <title>GoalPro - v11.1 بث مباشر API</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-  <style>
-    :root { --bg: #0f172a; --card: #1e293b; --text: white; --accent: #38bdf8; --live: #ef4444; --today: #22c55e; }
-    body.light { --bg: #f1f5f9; --card: white; --text: #0f172a; }
-    body { font-family: 'Cairo', sans-serif; background: var(--bg); color: var(--text); text-align: center; padding: 20px; }
-   .tabs { display: flex; justify-content: center; gap: 10px; margin: 20px 0; }
-   .tab { padding: 12px 25px; background: var(--card); border-radius: 10px; cursor: pointer; border: 2px solid transparent; }
-   .tab.active { border: 2px solid var(--accent); color: var(--accent); }
-  .matches-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 15px; max-width: 1300px; margin: 0 auto; }
-  .match-card { background: var(--card); border-radius: 15px; padding: 15px; border-left: 5px solid var(--today); text-align: right; }
-  .score { font-size: 24px; font-weight: bold; color: var(--live); }
-  .live-dot { display: inline-block; width: 10px; height: 10px; background: var(--live); border-radius: 50%; animation: pulse 1.5s infinite; }
-    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
-  </style>
-</head>
-<body>
-  <h1>🏆 GoalPro v11.1 - المباريات المباشرة</h1>
-
-  <div class="tabs">
+<html lang="ar" dir="rtl"> 
+<head> 
+<meta charset="UTF-8"> 
+<title>GoalPro - v11.2 يدوي</title> 
+<style> 
+:root { --bg: #0f172a; --card: #1e293b; --text: white; --accent: #38bdf8; --live: #ef4444; --today: #22c55e; } 
+body { font-family: 'Cairo', sans-serif; background: var(--bg); color: var(--text); text-align: center; padding: 20px; } 
+.tabs { display: flex; justify-content: center; gap: 10px; margin: 20px 0; } 
+.tab { padding: 12px 25px; background: var(--card); border-radius: 10px; cursor: pointer; border: 2px solid transparent; } 
+.tab.active { border: 2px solid var(--accent); color: var(--accent); } 
+.matches-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 15px; max-width: 1300px; margin: 0 auto; } 
+.match-card { background: var(--card); border-radius: 15px; padding: 15px; border-left: 5px solid var(--today); text-align: right; } 
+.score { font-size: 24px; font-weight: bold; color: var(--live); } 
+.live-dot { display: inline-block; width: 10px; height: 10px; background: var(--live); border-radius: 50%; animation: pulse 1.5s infinite; } 
+@keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} } 
+</style> 
+</head> 
+<body> 
+<h1>🏆 GoalPro v11.2 - يدوي</h1> 
+<div class="tabs"> 
     <div class="tab active" onclick="loadMatches('today')">⚡ مباريات اليوم</div>
     <div class="tab" onclick="loadMatches('live')">🔴 مباشر الان</div>
-    <div class="tab" onclick="showTab('all')">📅 150 بطولة</div>
-  </div>
-
-  <div class="matches-grid" id="matches"></div>
-  <div class="grid" id="tournaments"></div>
+</div> 
+<div class="matches-grid" id="matches"></div> 
 
 <script>
-const API_KEY = "حط_مفتاحك_هنا"; // من https://www.api-football.com
-const API_URL = "https://v3.football.api-sports.io";
+// ضيف مبارياتك هنا كل يوم
+const ALL_MATCHES = [
+    {type: "today", t1: "الاهلي", t2: "الزمالك", time: "21:00", league: "الدوري المصري", score: " - ", status: "today"},
+    {type: "live", t1: "برشلونة", t2: "ريال مدريد", time: "مباشر", league: "الليغا", score: "2 : 1", status: "live"},
+    {type: "today", t1: "العراق", t2: "السعودية", time: "19:00", league: "تصفيات كاس العالم", score: " - ", status: "today"},
+];
 
-async function loadMatches(type) {
-  document.getElementById('matches').innerHTML = "⏳ جاري التحميل...";
-  document.getElementById('tournaments').style.display = 'none';
-  document.getElementById('matches').style.display = 'grid';
-
-  let url = "";
-  const today = new Date().toISOString().split('T')[0];
-
-  if(type === 'today') url = `${API_URL}/fixtures?date=${today}`;
-  if(type === 'live') url = `${API_URL}/fixtures?live=all`;
-
-  const res = await fetch(url, {
-    "method": "GET",
-    "headers": {
-      "x-apisports-key": API_KEY
+function loadMatches(type) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    let matchesDiv = document.getElementById('matches');
+    matchesDiv.innerHTML = "";
+    
+    let filtered = ALL_MATCHES.filter(m => m.type === type);
+    
+    if(filtered.length === 0){
+        matchesDiv.innerHTML = "<p>ماكو مباريات اليوم</p>";
+        return;
     }
-  });
-  const data = await res.json();
-
-  showMatches(data.response);
-}
-
-function showMatches(matches) {
-  document.getElementById('matches').innerHTML = '';
-  matches.slice(0, 30).forEach(m => { // اول 30 مباراة
-    const status = m.fixture.status.short;
-    const isLive = status === '1H' || status === '2H' || status === 'ET';
-
-    document.getElementById('matches').innerHTML += `
-      <div class="match-card">
-        <p>${isLive? '<span class="live-dot"></span> مباشر' : m.fixture.date.substring(11,16)}</p>
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <span>${m.teams.home.name}</span>
-          <span class="score">${m.goals.home?? '-'} : ${m.goals.away?? '-'}</span>
-          <span>${m.teams.away.name}</span>
-        </div>
-        <p>🏆 ${m.league.name} - ${m.league.country}</p>
-        <p>📺 ${m.fixture.venue.name}</p>
-      </div>`;
-  });
-}
-
-// ضيف هنا دالة الـ 150 بطولة القديمة
-function showTab(tab) {
-  document.getElementById('matches').style.display = 'none';
-  document.getElementById('tournaments').style.display = 'grid';
-  filterData(); // دالة البطولات القديمة
+    
+    filtered.forEach(m => {
+        let isLive = m.status === "live";
+        matchesDiv.innerHTML += `
+        <div class="match-card">
+            <p>${isLive? '<span class="live-dot"></span> مباشر' : m.time}</p>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span>${m.t1}</span>
+                <span class="score">${m.score}</span>
+                <span>${m.t2}</span>
+            </div>
+            <p>🏆 ${m.league}</p>
+        </div>`;
+    });
 }
 
 // شغل مباريات اليوم اول ما يفتح
 loadMatches('today');
-</script>
-</body>
+</script> 
+</body> 
 </html>
