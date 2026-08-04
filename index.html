@@ -2,13 +2,8 @@
 <html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GoalPro ULTIMATE | With AdSense</title>
+<title>GoalPro ULTIMATE | YallaShoot + AdSense + Wallet</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;900&display=swap" rel="stylesheet">
-
-<!-- 1. كود AdSense الرئيسي - الصقه هنا -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
-     crossorigin="anonymous"></script>
-
 <style>
 :root{ --primary:#0047AB; --accent:#FFB800; --bg:#050811; --card:#0B1120; --text:#F8FAFC; --muted:#64748B; --live:#DC2626; --stars:#FFD700; --donate:#10B981;}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
@@ -16,62 +11,172 @@ body{background:var(--bg); color:var(--text);}
 header{background:linear-gradient(90deg, var(--primary) 0%, #000 100%); padding:12px 0; border-bottom:3px solid var(--accent); position:sticky; top:0; z-index:9999;}
 .wrap{max-width:1700px;margin:auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between; gap:10px; flex-wrap:wrap;}
 .logo{font-size:28px;font-weight:900; color:#fff; display:flex; align-items:center; gap:8px;}
-.logo img{width:36px; height:36px; border-radius:50%;}
+.logo img{width:36px; height:36px; border-radius:50%;} /* صورة جديدة بدل الكاس */
+nav a{color:#fff; text-decoration:none; margin:0 8px; font-weight:700; font-size:13px;} nav a:hover{color:var(--accent);}
+
+/* ايقونتين فقط: نجوم + تبرع */
 .btn-stars{background:var(--stars); color:#000; padding:7px 12px; border-radius:20px; font-weight:900; border:0; cursor:pointer; font-size:12px;}
 .btn-donate{background:var(--donate); color:#fff; padding:7px 12px; border-radius:20px; font-weight:900; border:0; cursor:pointer; font-size:12px;}
+
 select{background:var(--card); color:var(--text); border:1px solid var(--accent); padding:6px 10px; border-radius:6px; font-size:13px;}
-.ad-box{margin:15px auto; text-align:center;}
+.breaking{background:var(--live); padding:8px 0; text-align:center; font-weight:700; font-size:14px;}
+.ad-banner{background:#111; padding:15px; text-align:center; margin:15px auto; border:1px dashed var(--accent); color:var(--muted); font-size:12px;}
 .container{max-width:1700px;margin:15px auto;padding:0 20px;display:grid;grid-template-columns:2.2fr 1fr 1fr; gap:15px;}
 .card{background:var(--card); border-radius:10px; padding:15px; border:1px solid #1E293B;}
+.card h3{border-left:4px solid var(--accent); padding-left:10px; margin-bottom:12px; font-size:16px;}
+
+/* بطولات وصور */
+.tournaments{display:grid; grid-template-columns:repeat(4,1fr); gap:10px;}
+.tour{background:#0B1120; padding:10px; border-radius:8px; text-align:center; font-size:12px; border:1px solid #1E293B;}
+.tour img{width:40px; height:40px; margin-bottom:5px;}
+
+/* خطط الفريق */
+.formation{display:grid; grid-template-columns:repeat(5,1fr); gap:5px; background:#111; padding:15px; border-radius:8px;}
+.player{width:40px; height:40px; background:var(--primary); border-radius:50%; margin:auto; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:900;}
+
+/* معلومات شخصية يلا شوت ستايل */
+.profile{background:#0B1120; padding:10px; border-radius:8px; margin-bottom:10px;}
+.profile img{width:50px; height:50px; border-radius:50%; float:left; margin-right:10px;}
+[dir="rtl"].profile img{float:right; margin-right:0; margin-left:10px;}
+
+.donate-popup{display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:99999; align-items:center; justify-content:center;}
+.donate-box{background:var(--card); padding:25px; border-radius:15px; border:2px solid var(--accent); max-width:400px; text-align:center;}
+
+footer{background:#000; text-align:center; padding:30px; margin-top:40px; color:var(--muted); border-top:1px solid #1E293B; font-size:13px;}
+[dir="rtl"].card h3{border-left:0; border-right:4px solid var(--accent); padding-left:0; padding-right:10px;}
 </style>
 </head>
 <body>
 
+<div class="breaking" data-key="breaking">🔥 BREAKING: Champions League Final in Budapest</div>
+
 <header>
   <div class="wrap">
+    <!-- صورة جديدة بدل الكاس: شعار كرة قدم -->
     <div class="logo"><img src="https://cdn-icons-png.flaticon.com/512/53/53496.png">GOAL<span>PRO</span></div>
-    <nav><a href="#">Home</a><a href="#">Live</a></nav>
-    <div style="display:flex; gap:6px;">
-      <button class="btn-stars" onclick="alert('Stars')">⭐ Stars</button>
-      <button class="btn-donate" onclick="alert('Donate')">💰 Donate</button>
+    <nav>
+      <a href="#" data-key="home">Home</a><a href="#" data-key="live">Live</a><a href="#" data-key="tournaments">Tournaments</a>
+      <a href="#" data-key="formations">Formations</a><a href="#" data-key="profile">Profile</a>
+    </nav>
+    <div style="display:flex; gap:6px; align-items:center;">
+      <!-- ايقونتين فقط -->
+      <button class="btn-stars" onclick="openStars()">⭐ <span data-key="stars">Stars</span></button>
+      <button class="btn-donate" onclick="openDonate()">💰 <span data-key="donate">Donate</span></button>
+      <select id="lang" onchange="changeLang()">
+        <option value="en">English</option><option value="ar">العربية</option><option value="ru">Русский</option>
+        <option value="zh">中文</option><option value="hi">हिन्दी</option><option value="es">Español</option>
+        <option value="fr">Français</option><option value="de">Deutsch</option>
+      </select>
     </div>
   </div>
 </header>
 
-<!-- 2. اعلان افقي فوق - 728x90 -->
-<div class="ad-box">
-  <ins class="adsbygoogle"
-       style="display:block"
-       data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-       data-ad-slot="YYYYYYYYYY"
-       data-ad-format="auto"
-       data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<!-- مكان اعلانات Google AdSense -->
+<div class="ad-banner">
+  <!-- الصق كود AdSense هنا -->
+  ADVERTISEMENT - Google AdSense 728x90
 </div>
 
 <div class="container">
   <div>
     <div class="card">
       <img src="https://images.unsplash.com/photo-1577223625816-7546f13df3d4?w=1200" style="width:100%; border-radius:10px;">
-      <h2>GoalPro - موقع عالمي</h2>
+      <h2 style="margin-top:10px;" data-key="title">GoalPro - Like YallaShoot But Global</h2>
+    </div>
+
+    <!-- 1. بطولات مع صور -->
+    <div class="card" style="margin-top:15px;">
+      <h3 data-key="tournaments">🏆 Top Tournaments</h3>
+      <div class="tournaments">
+        <div class="tour"><img src="https://cdn-icons-png.flaticon.com/512/53/53496.png"><div data-key="ucl">UCL</div></div>
+        <div class="tour"><img src="https://cdn-icons-png.flaticon.com/512/53/53496.png"><div data-key="epl">Premier League</div></div>
+        <div class="tour"><img src="https://cdn-icons-png.flaticon.com/512/53/53496.png"><div data-key="laliga">La Liga</div></div>
+        <div class="tour"><img src="https://cdn-icons-png.flaticon.com/512/53/53496.png"><div data-key="sleague">Saudi League</div></div>
+      </div>
+    </div>
+
+    <!-- 2. خطط الفريق -->
+    <div class="card" style="margin-top:15px;">
+      <h3 data-key="formations">⚽ Team Formation 4-3-3</h3>
+      <div class="formation">
+        <div></div><div class="player">ST</div><div></div><div class="player">ST</div><div></div>
+        <div class="player">LM</div><div class="player">CM</div><div class="player">CM</div><div class="player">CM</div><div class="player">RM</div>
+        <div class="player">LB</div><div class="player">CB</div><div class="player">CB</div><div class="player">CB</div><div class="player">RB</div>
+        <div></div><div></div><div class="player">GK</div><div></div><div></div>
+      </div>
     </div>
   </div>
 
   <div>
-    <!-- 3. اعلان مربع جانبي - 300x250 -->
+    <!-- 3. معلومات شخصية ستايل يلا شوت -->
     <div class="card">
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-           data-ad-slot="ZZZZZZZZZZ"
-           data-ad-format="rectangle"
-           data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      <h3 data-key="profile">👤 Player Profile</h3>
+      <div class="profile">
+        <img src="https://randomuser.me/api/portraits/men/32.jpg">
+        <b>Lionel Messi</b><br>
+        <span style="color:var(--muted); font-size:12px;">Argentina • 37 Years</span><br>
+        <span style="color:var(--accent);">Goals: 850</span>
+      </div>
+      <div class="profile">
+        <img src="https://randomuser.me/api/portraits/men/45.jpg">
+        <b>Cristiano Ronaldo</b><br>
+        <span style="color:var(--muted); font-size:12px;">Portugal • 39 Years</span><br>
+        <span style="color:var(--accent);">Goals: 900</span>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:15px;">
+      <h3>💳 <span data-key="wallet">My Wallet</span></h3>
+      <p style="color:var(--muted); font-size:13px;" data-key="walletdesc">Connect your wallet to receive payments</p>
+      <input type="text" placeholder="USDT Wallet Address" style="width:100%; padding:8px; margin:8px 0; background:#0B1120; border:1px solid #333; color:#fff; border-radius:6px;">
+      <button class="btn-donate" style="width:100%;" data-key="connect">Connect Wallet</button>
+    </div>
+  </div>
+
+  <div>
+    <!-- مكان اعلان جانبي -->
+    <div class="ad-banner" style="height:250px;">
+      AD 300x250
     </div>
   </div>
 </div>
 
-<footer style="text-align:center; padding:30px; color:#64748B;">© 2026 GoalPro</footer>
+<!-- Popup النجوم -->
+<div class="donate-popup" id="starsPopup">
+  <div class="donate-box">
+    <h2>⭐ <span data-key="starstitle">Send Stars</span></h2>
+    <p data-key="starsdesc">Support us with Facebook Stars</p>
+    <button onclick="closePopups()" style="margin-top:10px; background:#333; color:#fff; padding:8px; width:100%; border:0; border-radius:8px;" data-key="close">Close</button>
+  </div>
+</div>
+
+<!-- Popup التبرع -->
+<div class="donate-popup" id="donatePopup">
+  <div class="donate-box">
+    <h2>💰 <span data-key="donatetitle">Donate to Wallet</span></h2>
+    <p data-key="donatedesc">Send USDT directly to our wallet</p>
+    <p style="background:#111; padding:10px; border-radius:8px; font-size:12px; word-break:break-all;">TQn9YdTkv...YourWalletAddress</p>
+    <button onclick="closePopups()" style="margin-top:10px; background:#333; color:#fff; padding:8px; width:100%; border:0; border-radius:8px;" data-key="close">Close</button>
+  </div>
+</div>
+
+<footer>© 2026 GoalPro ULTIMATE</footer>
+
+<script>
+function openStars(){document.getElementById('starsPopup').style.display='flex';}
+function openDonate(){document.getElementById('donatePopup').style.display='flex';}
+function closePopups(){document.getElementById('starsPopup').style.display='none'; document.getElementById('donatePopup').style.display='none';}
+
+let lang="en";
+const langData={
+en:{breaking:"🔥 BREAKING: Champions League Final in Budapest",home:"Home",live:"Live",tournaments:"Tournaments",formations:"Formations",profile:"Profile",stars:"Stars",donate:"Donate",title:"GoalPro - Like YallaShoot But Global",ucl:"UCL",epl:"Premier League",laliga:"La Liga",sleague:"Saudi League",wallet:"My Wallet",walletdesc:"Connect your wallet to receive payments",connect:"Connect Wallet",starstitle:"Send Stars",starsdesc:"Support us with Facebook Stars",donatetitle:"Donate to Wallet",donatedesc:"Send USDT directly to our wallet",close:"Close"},
+ar:{breaking:"🔥 عاجل: نهائي الابطال في بودابست",home:"الرئيسية",live:"مباشر",tournaments:"البطولات",formations:"التشكيلات",profile:"الملف الشخصي",stars:"نجوم",donate:"تبرع",title:"GoalPro - مثل يلا شوت لكن عالمي",ucl:"الابطال",epl:"الدوري الانجليزي",laliga:"الدوري الاسباني",sleague:"الدوري السعودي",wallet:"محفظتي",walletdesc:"اربط محفظتك لاستلام المدفوعات",connect:"ربط المحفظة",starstitle:"ارسال نجوم",starsdesc:"ادعمنا بنجوم فيسبوك",donatetitle:"تبرع للمحفظة",donatedesc:"ارسل USDT مباشرة لمحفظتنا",close:"اغلاق"},
+ru:{breaking:"🔥 СРОЧНО: Финал ЛЧ в Будапеште",home:"Главная",live:"Прямой эфир",tournaments:"Турниры",formations:"Составы",profile:"Профиль",stars:"Звезды",donate:"Пожертвовать",title:"GoalPro - Как YallaShoot но глобальный",ucl:"ЛЧ",epl:"АПЛ",laliga:"Ла Лига",sleague:"Сауд. Лига",wallet:"Мой кошелек",walletdesc:"Подключите кошелек для выплат",connect:"Подключить",starstitle:"Отправить звезды",starsdesc:"Поддержите нас звездами",donatetitle:"Пожертвовать на кошелек",donatedesc:"Отправьте USDT на наш кошелек",close:"Закрыть"},
+zh:{breaking:"🔥 突发: 欧冠决赛在布达佩斯",home:"首页",live:"直播",tournaments:"赛事",formations:"阵容",profile:"个人资料",stars:"星",donate:"捐赠",title:"GoalPro - 类似YallaShoot的全球平台",ucl:"欧冠",epl:"英超",laliga:"西甲",sleague:"沙特联赛",wallet:"我的钱包",walletdesc:"连接您的钱包以接收付款",connect:"连接钱包",starstitle:"发送星",starsdesc:"用Facebook星星支持我们",donatetitle:"捐赠到钱包",donatedesc:"直接发送USDT到我们的钱包",close:"关闭"},
+hi:{breaking:"🔥 ब्रेकिंग: चैंपियंस लीग फाइनल बुडापेस्ट में",home:"होम",live:"लाइव",tournaments:"टूर्नामेंट",formations:"टीम संरचना",profile:"प्रोफ़ाइल",stars:"स्टार्स",donate:"दान",title:"GoalPro - YallaShoot जैसा लेकिन ग्लोबल",ucl:"UCL",epl:"प्रीमियर लीग",laliga:"ला लीगा",sleague:"सऊदी लीग",wallet:"मेरा वॉलेट",walletdesc:"भुगतान प्राप्त करने के लिए वॉलेट कनेक्ट करें",connect:"वॉलेट कनेक्ट करें",starstitle:"स्टार्स भेजें",starsdesc:"Facebook स्टार्स से हमारा समर्थन करें",donatetitle:"वॉलेट को दान करें",donatedesc:"USDT सीधे हमारे वॉलेट पर भेजें",close:"बंद करें"}
+};
+function changeLang(){lang=document.getElementById("lang").value; document.querySelectorAll("[data-key]").forEach(el=>{if(langData[lang][el.dataset.key]) el.innerText=langData[lang][el.dataset.key];}); document.documentElement.dir=(lang=="ar")?"rtl":"ltr";}
+</script>
 
 </body>
 </html>
