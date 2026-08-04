@@ -1,104 +1,136 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
-<meta charset="UTF-8">
-<title>GoalPro Global | المنصة الرياضية الذكية</title>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700;900&display=swap" rel="stylesheet">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GoalPro ULTIMATE | Every Feature in One Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;900&display=swap" rel="stylesheet">
 <style>
-:root{ --primary:#0047AB; --accent:#FFB800; --bg:#0A0E1A; --card:#111827; --text:#F9FAFB; --muted:#9CA3AF; --live:#E10600;}
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Tajawal',sans-serif}
+:root{ --primary:#0047AB; --accent:#FFB800; --bg:#050811; --card:#0B1120; --text:#F8FAFC; --muted:#64748B; --live:#DC2626; --stars:#FFD700;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
 body{background:var(--bg); color:var(--text);}
-header{background:linear-gradient(90deg, var(--primary) 0%, #001F54 100%); padding:18px 0; border-bottom:3px solid var(--accent); position:sticky; top:0;}
-.wrap{max-width:1400px;margin:auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between;}
-.logo{font-size:32px;font-weight:900; color:#fff;} .logo span{color:var(--accent);}
-nav a{color:#fff; text-decoration:none; margin:0 16px; font-weight:700;}
-.match-bar{background:var(--card); padding:12px 0; overflow-x:auto; white-space:nowrap; border-bottom:1px solid #1F2937;}
-.match{display:inline-block; background:#1F2937; margin:0 8px; padding:10px 18px; border-radius:8px; min-width:200px; border-left:3px solid var(--accent);}
-.match .status{font-size:11px; background:var(--live); color:#fff; padding:2px 8px; border-radius:20px; font-weight:700;}
-.container{max-width:1400px;margin:30px auto;padding:0 20px;display:grid;grid-template-columns:2.5fr 1fr; gap:25px;}
-.feature{background:var(--card); border-radius:12px; overflow:hidden; border:1px solid #1F2937;}
-.feature img{width:100%; height:420px; object-fit:cover;}
-.feature-content{padding:25px;}
-.badge{background:var(--live); display:inline-block; padding:6px 14px; border-radius:6px; font-size:12px; font-weight:700; margin-bottom:10px;}
-.feature h1{font-size:30px; font-weight:900; line-height:1.5;}
-.grid{display:grid; grid-template-columns:repeat(3, 1fr); gap:20px; margin-top:25px;}
-.news{background:var(--card); border-radius:12px; overflow:hidden; border:1px solid #1F2937;}
-.news img{width:100%; height:180px; object-fit:cover;} .news h4{padding:15px; font-size:16px; font-weight:700;}
-.sidebar .widget{background:var(--card); border-radius:12px; padding:20px; margin-bottom:20px; border:1px solid #1F2937;}
-.widget h3{border-right:4px solid var(--accent); padding-right:12px; margin-bottom:15px;}
-.counter{display:flex; justify-content:space-around; text-align:center;}
-.counter div h2{color:var(--accent); font-size:28px; font-weight:900;}
-footer{background:#000; text-align:center; padding:30px; margin-top:50px; color:var(--muted);}
+header{background:linear-gradient(90deg, var(--primary) 0%, #000 100%); padding:12px 0; border-bottom:3px solid var(--accent); position:sticky; top:0; z-index:9999;}
+.wrap{max-width:1700px;margin:auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between; gap:10px; flex-wrap:wrap;}
+.logo{font-size:30px;font-weight:900; color:#fff; display:flex; align-items:center; gap:8px;}
+.logo img{width:36px; height:36px;}
+nav a{color:#fff; text-decoration:none; margin:0 10px; font-weight:700; font-size:14px;} nav a:hover{color:var(--accent);}
+.btn-donate{background:var(--stars); color:#000; padding:8px 16px; border-radius:25px; font-weight:900; border:0; cursor:pointer; display:flex; align-items:center; gap:6px; font-size:13px; transition:0.3s;}
+.btn-donate:hover{transform:scale(1.05); box-shadow:0 0 15px var(--stars);}
+.btn-donate svg{width:16px; height:16px;}
+select{background:var(--card); color:var(--text); border:1px solid var(--accent); padding:6px 10px; border-radius:6px; font-size:13px;}
+.breaking{background:var(--live); padding:8px 0; text-align:center; font-weight:700; font-size:14px;}
+.container{max-width:1700px;margin:15px auto;padding:0 20px;display:grid;grid-template-columns:2.2fr 1fr 1fr; gap:15px;}
+.card{background:var(--card); border-radius:10px; padding:15px; border:1px solid #1E293B;}
+.card h3{border-left:4px solid var(--accent); padding-left:10px; margin-bottom:12px; font-size:16px;}
+.countdown{font-size:20px; color:var(--accent); font-weight:900; text-align:center; margin-top:6px;}
+.donate-popup{display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:99999; align-items:center; justify-content:center;}
+.donate-box{background:var(--card); padding:30px; border-radius:15px; border:2px solid var(--accent); max-width:400px; text-align:center;}
+.donate-box h2{color:var(--stars); margin-bottom:10px;}
+.donate-btns{display:flex; gap:10px; margin-top:15px;}
+.donate-btns button{flex:1; padding:10px; border:0; border-radius:8px; font-weight:900; cursor:pointer; background:var(--stars); color:#000;}
+footer{background:#000; text-align:center; padding:30px; margin-top:40px; color:var(--muted); border-top:1px solid #1E293B; font-size:13px;}
+[dir="rtl"].card h3{border-left:0; border-right:4px solid var(--accent); padding-left:0; padding-right:10px;}
 </style>
 </head>
 <body>
 
+<div class="breaking" data-key="breaking">🔥 BREAKING: FIFA U20 Women's World Cup kicks off in Poland</div>
+
 <header>
   <div class="wrap">
-    <div class="logo">GOAL<span>PRO</span> GLOBAL</div>
+    <div class="logo"><img src="https://cdn-icons-png.flaticon.com/512/53/53496.png">GOAL<span>PRO</span> ULTIMATE</div>
     <nav>
-      <a href="#">الرئيسية</a>
-      <a href="#">150 بطولة</a>
-      <a href="#">النتائج</a>
-      <a href="#">الاخبار</a>
+      <a href="#" data-key="home">Home</a><a href="#" data-key="live">Live</a><a href="#" data-key="tables">Tables</a>
     </nav>
+    <div style="display:flex; gap:8px; align-items:center;">
+      <!-- ايقونة التبرع في الهيدر -->
+      <button class="btn-donate" onclick="openDonate()">
+        <svg fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+        <span data-key="donate">Donate</span>
+      </button>
+      <select id="lang" onchange="changeLang()">
+        <option value="en">English</option><option value="ar">العربية</option><option value="fr">Français</option>
+        <option value="es">Español</option><option value="de">Deutsch</option><option value="it">Italiano</option>
+        <option value="pt">Português</option><option value="tr">Türkçe</option><option value="id">Bahasa</option>
+        <option value="hi">हिन्दी</option><option value="ur">اردو</option><option value="fa">فارسی</option>
+        <option value="zh">中文</option><option value="ru">Русский</option><option value="ja">日本語</option>
+      </select>
+    </div>
   </div>
 </header>
 
-<div class="match-bar">
-  <div class="match"><span class="status">مباشر</span> كاس العالم للسيدات تحت 20 - دور المجموعات</div>
-  <div class="match"><span class="status">مباشر</span> مان سيتي 1 - 0 ليفربول</div>
-  <div class="match">كاس العالم لكرة الصالات <span style="color:var(--muted)">يبدأ بعد 38 يوم</span></div>
-</div>
-
 <div class="container">
   <div>
-    <div class="feature">
-      <img src="https://images.unsplash.com/photo-1577223625816-7546f13df3d4?w=1400">
-      <div class="feature-content">
-        <span class="badge">مباشر الان</span>
-        <h1>المنصة الذكية الاولى: تابع 150 بطولة من 2026 الى 2034 في مكان واحد</h1>
-        <p style="color:var(--muted); margin-top:10px;">اكبر موسوعة عربية لتقويم كرة القدم مع تنبيهات واحصائيات لحظية</p>
-      </div>
-    </div>
-
-    <div class="grid">
-      <div class="news">
-        <img src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=600">
-        <h4>الهلال والنصر: قمة السعودية تشتعل</h4>
-      </div>
-      <div class="news">
-        <img src="https://images.unsplash.com/photo-1543326727-c2d62affc0e2?w=600">
-        <h4>الاهلي والزمالك: موعد القمة 127</h4>
-      </div>
-      <div class="news">
-        <img src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=600">
-        <h4>نهائي دوري الابطال في بودابست 2026</h4>
-      </div>
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1577223625816-7546f13df3d4?w=1200" style="width:100%; border-radius:10px;">
+      <h2 style="margin-top:10px;" data-key="title">The #1 Smart Platform: Follow 150 Tournaments from 2026 to 2034</h2>
+      <!-- ايقونة التبرع داخل المحتوى -->
+      <button class="btn-donate" style="margin-top:15px;" onclick="openDonate()">⭐ <span data-key="support">Support GoalPro</span></button>
     </div>
   </div>
 
-  <div class="sidebar">
-    <div class="widget">
-      <h3>📊 احصائيات GoalPro</h3>
-      <div class="counter">
-        <div><h2>150</h2><p>بطولة</p></div>
-        <div><h2>8</h2><p>سنوات</p></div>
-        <div><h2>24/7</h2><p>تحديث</p></div>
-      </div>
+  <div>
+    <div class="card">
+      <h3 data-key="next">🏆 Coming Soon</h3>
+      <p style="color:var(--muted);" data-key="futsal">FIFA Futsal World Cup 2026</p>
+      <div class="countdown" id="countdown1"></div>
     </div>
+    <div class="card" style="margin-top:15px;">
+      <h3>⭐ <span data-key="support">Support Us</span></h3>
+      <!-- ايقونة التبرع في السايد -->
+      <button class="btn-donate" style="width:100%; margin-top:10px;" onclick="openDonate()">⭐ <span data-key="donate">Donate</span></button>
+    </div>
+  </div>
+</div>
 
-    <div class="widget">
-      <h3>🏆 قادمة قريباً</h3>
-      <p style="color:var(--muted); font-size:14px; margin-bottom:10px;">كاس العالم لكرة الصالات 2026<br><span style="color:var(--accent); font-weight:700;">يبدأ بعد 38 يوم - الفلبين</span></p>
-      <p style="color:var(--muted); font-size:14px;">كاس العالم للسيدات تحت 17<br><span style="color:var(--accent); font-weight:700;">يبدأ بعد 73 يوم - المغرب</span></p>
+<!-- Popup التبرع -->
+<div class="donate-popup" id="donatePopup">
+  <div class="donate-box">
+    <h2>⭐ <span data-key="donatetitle">Support GoalPro</span></h2>
+    <p style="color:var(--muted);" data-key="donatedesc">Your donation helps us keep the platform free</p>
+    <div class="donate-btns">
+      <button onclick="donate(5)">$5</button>
+      <button onclick="donate(10)">$10</button>
+      <button onclick="donate(20)">$20</button>
     </div>
+    <button onclick="closeDonate()" style="margin-top:10px; background:#333; color:#fff; padding:8px; width:100%; border:0; border-radius:8px;" data-key="close">Close</button>
   </div>
 </div>
 
 <footer>
-  © 2026 GoalPro Global. اليوم: 4 اغسطس 2026 | منصة رياضية عربية مستقلة
+  © 2026 GoalPro ULTIMATE | <span id="today"></span>
+  <div style="margin-top:15px;">
+    <!-- ايقونة التبرع في الفوتر -->
+    <button class="btn-donate" onclick="openDonate()">⭐ <span data-key="donate">Donate</span></button>
+  </div>
 </footer>
 
+<script>
+function openDonate(){document.getElementById('donatePopup').style.display='flex';}
+function closeDonate(){document.getElementById('donatePopup').style.display='none';}
+function donate(amount){alert(`⭐ Thank you for donating $${amount}!`); closeDonate();}
+
+function updateCountdown(){const d=Math.max(0,Math.floor((new Date("2026-09-12")-new Date())/(1000*60*60*24))); document.getElementById("countdown1").innerText=d+" + (langData[lang].days); document.getElementById("today").innerText=new Date().toLocaleDateString('en-US');}
+setInterval(updateCountdown,1000*60*60); updateCountdown();
+
+let lang="en";
+const langData={
+en:{breaking:"🔥 BREAKING: FIFA U20 Women's World Cup kicks off in Poland",home:"Home",live:"Live",tables:"Tables",donate:"Donate",title:"The #1 Smart Platform: Follow 150 Tournaments from 2026 to 2034",next:"🏆 Coming Soon",futsal:"FIFA Futsal World Cup 2026",support:"Support GoalPro",donatetitle:"Support GoalPro",donatedesc:"Your donation helps us keep the platform free",close:"Close",days:"days"},
+ar:{breaking:"🔥 عاجل: كاس العالم للسيدات انطلقت",home:"الرئيسية",live:"مباشر",tables:"الترتيب",donate:"تبرع",title:"المنصة الذكية رقم 1: تابع 150 بطولة",next:"🏆 قادمة قريباً",futsal:"كاس العالم للصالات 2026",support:"ادعم GoalPro",donatetitle:"ادعم GoalPro",donatedesc:"تبرعك يساعدنا على الاستمرار مجانا",close:"اغلاق",days:"يوم"},
+fr:{breaking:"🔥 ALERTE: Coupe du Monde Féminine U20 commence",home:"Accueil",live:"Direct",tables:"Classement",donate:"Faire un don",title:"Plateforme #1: Suivez 150 tournois",next:"🏆 Bientôt",futsal:"Coupe du Monde Futsal 2026",support:"Soutenir GoalPro",donatetitle:"Soutenir GoalPro",donatedesc:"Votre don nous aide à rester gratuit",close:"Fermer",days:"jours"},
+es:{breaking:"🔥 ÚLTIMA HORA: Mundial Femenino U20 comienza",home:"Inicio",live:"En Vivo",tables:"Tabla",donate:"Donar",title:"Plataforma #1: Sigue 150 torneos",next:"🏆 Próximamente",futsal:"Copa Mundial de Futsal 2026",support:"Apoyar GoalPro",donatetitle:"Apoyar GoalPro",donatedesc:"Tu donación nos ayuda a seguir gratis",close:"Cerrar",days:"días"},
+de:{breaking:"🔥 BREAKING: U20 Frauen-WM beginnt",home:"Startseite",live:"Live",tables:"Tabelle",donate:"Spenden",title:"Nr.1 Plattform: 150 Turniere verfolgen",next:"🏆 Demnächst",futsal:"Futsal-Weltmeisterschaft 2026",support:"GoalPro unterstützen",donatetitle:"GoalPro unterstützen",donatedesc:"Ihre Spende hält uns kostenlos",close:"Schließen",days:"Tage"},
+it:{breaking:"🔥 BREAKING: Mondiali Femminili U20 iniziano",home:"Home",live:"Diretta",tables:"Classifica",donate:"Dona",title:"Piattaforma #1: Segui 150 tornei",next:"🏆 Prossimamente",futsal:"Coppa del Mondo Futsal 2026",support:"Supporta GoalPro",donatetitle:"Supporta GoalPro",donatedesc:"La tua donazione ci mantiene gratuiti",close:"Chiudi",days:"giorni"},
+pt:{breaking:"🔥 URGENTE: Copa do Mundo Feminina U20 começa",home:"Início",live:"Ao Vivo",tables:"Tabela",donate:"Doar",title:"Plataforma #1: Siga 150 torneios",next:"🏆 Em Breve",futsal:"Copa do Mundo de Futsal 2026",support:"Apoiar GoalPro",donatetitle:"Apoiar GoalPro",donatedesc:"Sua doação nos mantém gratuitos",close:"Fechar",days:"dias"},
+tr:{breaking:"🔥 SON DAKİKA: U20 Kadınlar Dünya Kupası başladı",home:"Ana Sayfa",live:"Canlı",tables:"Puan Durumu",donate:"Bağış Yap",title:"1 Numaralı Platform: 150 Turnuva",next:"🏆 Yakında",futsal:"Futsal Dünya Kupası 2026",support:"GoalPro'yu Destekle",donatetitle:"GoalPro'yu Destekle",donatedesc:"Bağışınız ücretsiz kalmamıza yardımcı olur",close:"Kapat",days:"gün"},
+id:{breaking:"🔥 TERKINI: Piala Dunia Wanita U20 dimulai",home:"Beranda",live:"Langsung",tables:"Klasemen",donate:"Donasi",title:"Platform #1: Ikuti 150 turnamen",next:"🏆 Segera",futsal:"Piala Dunia Futsal 2026",support:"Dukung GoalPro",donatetitle:"Dukung GoalPro",donatedesc:"Donasi Anda membantu kami tetap gratis",close:"Tutup",days:"hari"},
+hi:{breaking:"🔥 ब्रेकिंग: FIFA U20 महिला विश्व कप शुरू",home:"होम",live:"लाइव",tables:"तालिका",donate:"दान करें",title:"#1 प्लेटफॉर्म: 150 टूर्नामेंट फॉलो करें",next:"🏆 जल्द आ रहा है",futsal:"फुटसाल विश्व कप 2026",support:"GoalPro का समर्थन करें",donatetitle:"GoalPro का समर्थन करें",donatedesc:"आपका दान हमें मुफ्त रखने में मदद करता है",close:"बंद करें",days:"दिन"},
+ur:{breaking:"🔥 بریکنگ: FIFA U20 خواتین ورلڈ کپ شروع",home:"ہوم",live:"لائیو",tables:"پوائنٹس ٹیبل",donate:"عطیہ کریں",title:"#1 پلیٹ فارم: 150 ٹورنامنٹ فالو کریں",next:"🏆 جلد آرہا ہے",futsal:"فٹسال ورلڈ کپ 2026",support:"GoalPro کی حمایت کریں",donatetitle:"GoalPro کی حمایت کریں",donatedesc:"آپ کا عطیہ ہمیں مفت رکھنے میں مدد کرتا ہے",close:"بند کریں",days:"دن"},
+fa:{breaking:"🔥 فوری: جام جهانی زنان زیر 20 سال شروع شد",home:"صفحه اصلی",live:"زنده",tables:"جدول",donate:"کمک مالی",title:"شماره 1 پلتفرم: 150 تورنمنت",next:"🏆 به زودی",futsal:"جام جهانی فوتسال 2026",support:"حمایت از GoalPro",donatetitle:"حمایت از GoalPro",donatedesc:"کمک مالی شما ما را رایگان نگه می دارد",close:"بستن",days:"روز"},
+zh:{breaking:"🔥 突发: U20女足世界杯开赛",home:"首页",live:"直播",tables:"积分榜",donate:"捐赠",title:"第一平台：关注150项赛事",next:"🏆 即将到来",futsal:"2026年室内五人制世界杯",support:"支持GoalPro",donatetitle:"支持GoalPro",donatedesc:"您的捐赠帮助我们保持免费",close:"关闭",days:"天"},
+ru:{breaking:"🔥 СРОЧНО: ЧМ U20 среди женщин стартовал",home:"Главная",live:"Прямой эфир",tables:"Таблица",donate:"Пожертвовать",title:"Платформа №1: 150 турниров",next:"🏆 Скоро",futsal:"ЧМ по футзалу 2026",support:"Поддержать GoalPro",donatetitle:"Поддержать GoalPro",donatedesc:"Ваше пожертвование помогает нам оставаться бесплатными",close:"Закрыть",days:"дней"},
+ja:{breaking:"🔥 速報: U20女子ワールドカップ開幕",home:"ホーム",live:"ライブ",tables:"順位表",donate:"寄付",title:"No.1プラットフォーム: 150大会",next:"🏆 まもなく",futsal:"フットサルW杯2026",support:"GoalProを支援",donatetitle:"GoalProを支援",donatedesc:"あなたの寄付が無料維持に役立ちます",close:"閉じる",days:"日"}
+};
+function changeLang(){lang=document.getElementById("lang").value; document.querySelectorAll("[data-key]").forEach(el=>{if(langData[lang][el.dataset.key]) el.innerText=langData[lang][el.dataset.key];}); document.documentElement.dir=(lang=="ar"||lang=="ur"||lang=="fa")?"rtl":"ltr";}
+</script>
 </body>
 </html>
