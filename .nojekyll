@@ -1,1 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GoalPro ULTIMATE v10</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
 
+<!-- AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+
+<style>
+:root{ --primary:#0047AB; --accent:#FFB800; --bg:#050811; --card:#0B1120; --text:#F8FAFC; --muted:#94A3B8; --stars:#FFD700; --donate:#10B981;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
+body{background:var(--bg); color:var(--text);}
+header{background:linear-gradient(90deg, var(--primary) 0%, #000 100%); padding:12px 0; border-bottom:3px solid var(--accent); position:sticky; top:0; z-index:999;}
+.wrap{max-width:1600px;margin:auto;padding:0 15px;display:flex;align-items:center;justify-content:space-between; flex-wrap:wrap; gap:10px;}
+.logo{font-size:26px;font-weight:900; color:#fff; display:flex; align-items:center; gap:8px;}
+.logo img{width:35px; height:35px;} /* صورة جديدة: كرة قدم */
+nav a{color:#fff; text-decoration:none; margin:0 8px; font-weight:700;}
+.btn{padding:8px 14px; border-radius:20px; font-weight:900; border:0; cursor:pointer;}
+.btn-stars{background:var(--stars); color:#000;}
+.btn-donate{background:var(--donate); color:#fff;}
+select{background:var(--card); color:var(--text); border:1px solid var(--accent); padding:6px 10px; border-radius:6px;}
+.ad{margin:15px auto; text-align:center; background:#111; padding:10px;}
+.container{max-width:1600px;margin:15px auto;padding:0 15px;display:grid;grid-template-columns:2fr 1fr; gap:15px;}
+.card{background:var(--card); border-radius:10px; padding:15px; border:1px solid #1E293B;}
+.card h3{border-left:4px solid var(--accent); padding-left:10px; margin-bottom:12px; font-size:18px;}
+.tours{display:grid; grid-template-columns:repeat(4,1fr); gap:10px;}
+.tour{background:#0B1120; padding:10px; border-radius:8px; text-align:center; font-size:12px;}
+.tour img{width:40px; height:40px;}
+.formation{display:grid; grid-template-columns:repeat(5,1fr); gap:6px; background:#000; padding:15px; border-radius:8px; margin-top:10px;}
+.player{width:45px; height:45px; background:var(--primary); border-radius:50%; margin:auto; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:900; border:2px solid var(--accent);}
+.profile{display:flex; align-items:center; gap:10px; background:#0B1120; padding:10px; border-radius:8px; margin-bottom:10px;}
+.profile img{width:50px; height:50px; border-radius:50%;}
+.popup{display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:9999; align-items:center; justify-content:center;}
+.box{background:var(--card); padding:25px; border-radius:15px; border:2px solid var(--accent); max-width:400px; text-align:center;}
+input{width:100%; padding:10px; margin:8px 0; background:#000; border:1px solid #333; color:#fff; border-radius:6px;}
+[dir="rtl"].card h3{border-left:0; border-right:4px solid var(--accent); padding-left:0; padding-right:10px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="logo"><img src="https://cdn-icons-png.flaticon.com/512/53/53496.png">GOALPRO</div>
+    <nav><a href="#">Home</a><a href="#">Live</a><a href="#">Tables</a></nav>
+    <div style="display:flex; gap:8px;">
+      <!-- ايقونتين فقط -->
+      <button class="btn btn-stars" onclick="document.getElementById('s').style.display='flex'">⭐ <span data-key="stars">Stars</span></button>
+      <button class="btn btn-donate" onclick="document.getElementById('d').style.display='flex'">💰 <span data-key="donate">Donate</span></button>
+      <!-- 5 لغات: اضفنا روسي صيني هندي -->
+      <select id="lang" onchange="changeLang()">
+        <option value="en">English</option>
+        <option value="ar">العربية</option>
+        <option value="ru">Русский</option>
+        <option value="zh">中文</option>
+        <option value="hi">हिन्दी</option>
+      </select>
+    </div>
+  </div>
+</header>
+
+<div class="ad">
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="12345" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<div class="container">
+  <div>
+    <div class="card">
+      <h3 data-key="tour">🏆 Top Tournaments</h3>
+      <div class="tours">
+        <div class="tour"><img src="https://cdn-icons-png.flaticon.com/512/53/53496.png"><div data-key="ucl">UCL</div></div>
+        <div class="tour"><img src="https://cdn-icons-png.flaticon.com/512/53/53496.png"><div data-key="epl">Premier League</div></div>
+        <div class="tour"><img src="https://cdn-icons-png.flaticon.com/512/53/53496.png"><div data-key="wc">World Cup 2026</div></div>
+        <div class="tour"><img src="https://cdn-icons-png.flaticon.com/512/53/53496.png"><div data-key="sl">Saudi League</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 data-key="form">⚽ Team Formation 4-3-3</h3>
+      <div class="formation">
+        <div></div><div class="player">ST</div><div></div><div class="player">ST</div><div></div>
+        <div class="player">LM</div><div class="player">CM</div><div class="player">CM</div><div class="player">CM</div><div class="player">RM</div>
+        <div class="player">LB</div><div class="player">CB</div><div class="player">CB</div><div class="player">CB</div><div class="player">RB</div>
+        <div></div><div></div><div class="player">GK</div><div></div><div></div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h3 data-key="players">👤 Player Profiles - YallaShoot Style</h3>
+      <div class="profile">
+        <img src="https://randomuser.me/api/portraits/men/32.jpg">
+        <div><b>Lionel Messi</b><br><span style="color:var(--muted); font-size:12px;">Argentina • 37 • Goals: 850</span></div>
+      </div>
+      <div class="profile">
+        <img src="https://randomuser.me/api/portraits/men/45.jpg">
+        <div><b>Cristiano Ronaldo</b><br><span style="color:var(--muted); font-size:12px;">Portugal • 39 • Goals: 900</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>💳 <span data-key="wallet">Wallet</span></h3>
+      <p style="color:var(--muted); font-size:13px;" data-key="walletd">Receive payments directly to USDT</p>
+      <input type="text" placeholder="TQn9YdTkv...Your USDT Address">
+      <button class="btn btn-donate" style="width:100%;" data-key="connect">Connect Wallet</button>
+    </div>
+  </div>
+</div>
+
+<div class="popup" id="s"><div class="box"><h2>⭐ <span data-key="st">Send Stars</span></h2><p data-key="std">Support us with Facebook Stars</p><button onclick="document.getElementById('s').style.display='none'" class="btn" style="background:#333; color:#fff; width:100%; margin-top:10px;" data-key="close">Close</button></div></div>
+<div class="popup" id="d"><div class="box"><h2>💰 <span data-key="dt">Donate</span></h2><p data-key="dtd">Send USDT to: TQn9YdTkv...YourWallet</p><button onclick="document.getElementById('d').style.display='none'" class="btn" style="background:#333; color:#fff; width:100%; margin-top:10px;" data-key="close">Close</button></div></div>
+
+<footer style="text-align:center; padding:30px; color:var(--muted);">© 2026 GoalPro ULTIMATE</footer>
+
+<script>
+let lang="en";
+const L={
+en:{stars:"Stars",donate:"Donate",tour:"Top Tournaments",ucl:"UCL",epl:"Premier League",wc:"World Cup 2026",sl:"Saudi League",form:"Team Formation",players:"Player Profiles",wallet:"Wallet",walletd:"Receive payments directly to USDT",connect:"Connect Wallet",st:"Send Stars",std:"Support us with Facebook Stars",dt:"Donate",dtd:"Send USDT to:",close:"Close"},
+ar:{stars:"نجوم",donate:"تبرع",tour:"البطولات",ucl:"الابطال",epl:"الدوري الانجليزي",wc:"كاس العالم 2026",sl:"الدوري السعودي",form:"تشكيلة الفريق",players:"ملفات اللاعبين",wallet:"المحفظة",walletd:"استلم المدفوعات مباشرة USDT",connect:"ربط المحفظة",st:"ارسال نجوم",std:"ادعمنا بنجوم فيسبوك",dt:"تبرع",dtd:"ارسل USDT الى:",close:"اغلاق"},
+ru:{stars:"Звезды",donate:"Пожертвовать",tour:"Турниры",ucl:"ЛЧ",epl:"АПЛ",wc:"ЧМ 2026",sl:"Сауд. Лига",form:"Состав команды",players:"Профили игроков",wallet:"Кошелек",walletd:"Получайте выплаты на USDT",connect:"Подключить",st:"Отправить звезды",std:"Поддержите нас",dt:"Пожертвовать",dtd:"Отправить USDT на:",close:"Закрыть"},
+zh:{stars:"星",donate:"捐赠",tour:"顶级赛事",ucl:"欧冠",epl:"英超",wc:"世界杯2026",sl:"沙特联赛",form:"球队阵容",players:"球员资料",wallet:"钱包",walletd:"直接接收USDT付款",connect:"连接钱包",st:"发送星星",std:"用星星支持我们",dt:"捐赠",dtd:"发送USDT到:",close:"关闭"},
+hi:{stars:"स्टार्स",donate:"दान",tour:"शीर्ष टूर्नामेंट",ucl:"UCL",epl:"प्रीमियर लीग",wc:"विश्व कप 2026",sl:"सऊदी लीग",form:"टीम संरचना",players:"खिलाड़ी प्रोफ़ाइल",wallet:"वॉलेट",walletd:"USDT पर सीधे भुगतान प्राप्त करें",connect:"वॉलेट कनेक्ट करें",st:"स्टार्स भेजें",std:"Facebook स्टार्स से समर्थन करें",dt:"दान",dtd:"USDT भेजें:",close:"बंद करें"}
+};
+function changeLang(){lang=document.getElementById("lang").value; document.querySelectorAll("[data-key]").forEach(el=>{if(L[lang][el.dataset.key]) el.innerText=L[lang][el.dataset.key];}); document.documentElement.dir=(lang=="ar")?"rtl":"ltr";}
+</script>
+
+</body>
+</html>
