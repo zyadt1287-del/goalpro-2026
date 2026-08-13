@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GoalPro ULTIMATE v11</title>
+<title>GoalPro ULTIMATE v12</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
 <style>
 :root{ --primary:#0047AB; --accent:#FFB800; --bg:#050811; --card:#0B1120; --text:#F8FAFC; --muted:#94A3B8; --stars:#FFD700; --donate:#10B981;}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
@@ -19,13 +18,17 @@ nav a{color:#fff; text-decoration:none; margin:0 8px; font-weight:700;}
 .btn-stars{background:var(--stars); color:#000;}
 .btn-donate{background:var(--donate); color:#fff;}
 select{background:var(--card); color:var(--text); border:1px solid var(--accent); padding:6px 10px; border-radius:6px;}
-.ad{margin:15px auto; text-align:center; background:#111; padding:10px;}
 .container{max-width:1600px;margin:15px auto;padding:0 15px;display:grid;grid-template-columns:2fr 1fr; gap:15px;}
 .card{background:var(--card); border-radius:10px; padding:15px; border:1px solid #1E293B;}
 .card h3{border-left:4px solid var(--accent); padding-left:10px; margin-bottom:12px; font-size:18px;}
-.tours{display:grid; grid-template-columns:repeat(5,1fr); gap:10px;}
-.tour{background:#0B1120; padding:10px; border-radius:8px; text-align:center; font-size:12px;}
+.tours{display:grid; grid-template-columns:repeat(2,1fr); gap:12px;}
+.tour{background:#0B1120; padding:12px; border-radius:8px; border:1px solid #1E293B; cursor:pointer; transition:0.3s;}
+.tour:hover{border-color:var(--accent);}
+.tour-top{display:flex; align-items:center; gap:10px; margin-bottom:8px;}
 .tour img{width:40px; height:40px;}
+.tour h4{font-size:15px; color:var(--accent);}
+.tour-details{font-size:11px; color:var(--muted); line-height:1.6;}
+.tour-details span{color:var(--text); font-weight:700;}
 .formation{display:grid; grid-template-columns:repeat(5,1fr); gap:6px; background:#000; padding:15px; border-radius:8px; margin-top:10px;}
 .player{width:45px; height:45px; background:var(--primary); border-radius:50%; margin:auto; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:900; border:2px solid var(--accent);}
 .profile{display:flex; align-items:center; gap:10px; background:#0B1120; padding:10px; border-radius:8px; margin-bottom:10px;}
@@ -42,39 +45,119 @@ input{width:100%; padding:10px; margin:8px 0; background:#000; border:1px solid 
 <div class="logo"><img src="https://cdn-icons-png.flaticon.com/512/53/53496.png">GOALPRO</div>
 <nav><a href="#">Home</a><a href="#">Live</a><a href="#">Tables</a></nav>
 <div style="display:flex; gap:8px;">
-<!-- صلحت: زرين فقط -->
 <button class="btn btn-stars" onclick="document.getElementById('s').style.display='flex'">⭐ <span data-key="stars">Stars</span></button>
 <button class="btn btn-donate" onclick="document.getElementById('d').style.display='flex'">💰 <span data-key="donate">Donate</span></button>
 <select id="lang" onchange="changeLang()">
-<option value="en">English</option>
-<option value="ar">العربية</option>
-<option value="ru">Русский</option>
-<option value="zh">中文</option>
-<option value="hi">हिन्दी</option>
+<option value="en">English</option><option value="ar">العربية</option><option value="ru">Русский</option><option value="zh">中文</option><option value="hi">हिन्दी</option>
 </select>
 </div>
 </div>
 </header>
-<div class="ad">
-<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="12345" data-ad-format="auto" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-</div>
 <div class="container">
 <div>
 <div class="card">
 <h3 data-key="tour">🏆 All Tournaments 2026-2034</h3>
-<!-- صلحت: 10 بطولات -->
 <div class="tours">
-<div class="tour"><img src="https://cdn-icons-png.flaticon.com/512/53/53496.png"><div data-key="ucl">UCL</div></div>
-<div class="tour"><img src="https://cdn-icons-png.flaticon.com/512/53/53496.png"><div data-key="epl">Premier League</div></div>
-<div class="tour"><img src="https://cdn-icons-png.flaticon.com/512/53/53496.png"><div data-key="wc">World Cup 2026</div></div>
-<div class="tour"><img src="https://cdn-icons-png.flaticon.com/512/53/53496.png"><div data-key="sl">Saudi League</div></div>
-<div class="tour"><img src="https://cdn-icons-png.flaticon.com/512/53/53496.png"><div>La Liga</div></div>
-<div class="tour"><img src="https://cdn-icons-png.flaticon.com/512/53/53496.png"><div>Serie A</div></div>
-<div class="tour"><img src="https://cdn-icons-png.flaticon.com/512/53/53496.png"><div>Bundesliga</div></div>
-<div class="tour"><img src="https://cdn-icons-png.flaticon.com/512/53/53496.png"><div>Ligue 1</div></div>
-<div class="tour"><img src="https://cdn-icons-png.flaticon.com/512/53/53496.png"><div>AFC Asian Cup</div></div>
-<div class="tour"><img src="https://cdn-icons-png.flaticon.com/512/53/53496.png"><div>Copa America</div></div>
+<!-- 1 -->
+<div class="tour">
+<div class="tour-top"><img src="https://cdn-icons-png.flaticon.com/512/53/53496.png"><h4>UEFA Champions League</h4></div>
+<div class="tour-details">
+<span data-key="date">Date:</span> Sep 2026 - Jun 2027<br>
+<span data-key="teams">Teams:</span> 36 Teams<br>
+<span data-key="prize">Prize:</span> $2.4 Billion<br>
+<span data-key="desc">Biggest club tournament in Europe</span>
+</div>
+</div>
+<!-- 2 -->
+<div class="tour">
+<div class="tour-top"><img src="https://cdn-icons-png.flaticon.com/512/53/53496.png"><h4>Premier League</h4></div>
+<div class="tour-details">
+<span data-key="date">Date:</span> Aug 2026 - May 2027<br>
+<span data-key="teams">Teams:</span> 20 Teams<br>
+<span data-key="prize">Prize:</span> $4.5 Billion TV<br>
+<span data-key="desc">Most watched league in the world</span>
+</div>
+</div>
+<!-- 3 -->
+<div class="tour">
+<div class="tour-top"><img src="https://cdn-icons-png.flaticon.com/512/53/53496.png"><h4>FIFA World Cup 2026</h4></div>
+<div class="tour-details">
+<span data-key="date">Date:</span> Jun - Jul 2026<br>
+<span data-key="teams">Teams:</span> 48 Teams<br>
+<span data-key="prize">Prize:</span> $440 Million<br>
+<span data-key="desc">USA, Canada, Mexico. Biggest ever WC</span>
+</div>
+</div>
+<!-- 4 -->
+<div class="tour">
+<div class="tour-top"><img src="https://cdn-icons-png.flaticon.com/512/53/53496.png"><h4>Saudi Pro League</h4></div>
+<div class="tour-details">
+<span data-key="date">Date:</span> Aug 2026 - May 2027<br>
+<span data-key="teams">Teams:</span> 18 Teams<br>
+<span data-key="prize">Prize:</span> $500 Million<br>
+<span data-key="desc">Ronaldo, Benzema, Neymar league</span>
+</div>
+</div>
+<!-- 5 -->
+<div class="tour">
+<div class="tour-top"><img src="https://cdn-icons-png.flaticon.com/512/53/53496.png"><h4>La Liga</h4></div>
+<div class="tour-details">
+<span data-key="date">Date:</span> Aug 2026 - May 2027<br>
+<span data-key="teams">Teams:</span> 20 Teams<br>
+<span data-key="prize">Prize:</span> $2.1 Billion<br>
+<span data-key="desc">Home of Real Madrid & Barcelona</span>
+</div>
+</div>
+<!-- 6 -->
+<div class="tour">
+<div class="tour-top"><img src="https://cdn-icons-png.flaticon.com/512/53/53496.png"><h4>Serie A</h4></div>
+<div class="tour-details">
+<span data-key="date">Date:</span> Aug 2026 - May 2027<br>
+<span data-key="teams">Teams:</span> 20 Teams<br>
+<span data-key="prize">Prize:</span> $1.3 Billion<br>
+<span data-key="desc">Italian football with history</span>
+</div>
+</div>
+<!-- 7 -->
+<div class="tour">
+<div class="tour-top"><img src="https://cdn-icons-png.flaticon.com/512/53/53496.png"><h4>Bundesliga</h4></div>
+<div class="tour-details">
+<span data-key="date">Date:</span> Aug 2026 - May 2027<br>
+<span data-key="teams">Teams:</span> 18 Teams<br>
+<span data-key="prize">Prize:</span> $1.6 Billion<br>
+<span data-key="desc">German efficiency & fan culture</span>
+</div>
+</div>
+<!-- 8 -->
+<div class="tour">
+<div class="tour-top"><img src="https://cdn-icons-png.flaticon.com/512/53/53496.png"><h4>Ligue 1</h4></div>
+<div class="tour-details">
+<span data-key="date">Date:</span> Aug 2026 - May 2027<br>
+<span data-key="teams">Teams:</span> 18 Teams<br>
+<span data-key="prize">Prize:</span> $900 Million<br>
+<span data-key="desc">PSG and French talents</span>
+</div>
+</div>
+<!-- 9 -->
+<div class="tour">
+<div class="tour-top"><img src="https://cdn-icons-png.flaticon.com/512/53/53496.png"><h4>AFC Asian Cup</h4></div>
+<div class="tour-details">
+<span data-key="date">Date:</span> Jan 2027<br>
+<span data-key="teams">Teams:</span> 24 Teams<br>
+<span data-key="prize">Prize:</span> $14.8 Million<br>
+<span data-key="desc">Biggest tournament in Asia</span>
+</div>
+</div>
+<!-- 10 -->
+<div class="tour">
+<div class="tour-top"><img src="https://cdn-icons-png.flaticon.com/512/53/53496.png"><h4>Copa America</h4></div>
+<div class="tour-details">
+<span data-key="date">Date:</span> Jun - Jul 2027<br>
+<span data-key="teams">Teams:</span> 16 Teams<br>
+<span data-key="prize">Prize:</span> $72 Million<br>
+<span data-key="desc">Messi vs Brazil. South America battle</span>
+</div>
+</div>
 </div>
 </div>
 <div class="card">
@@ -101,18 +184,13 @@ input{width:100%; padding:10px; margin:8px 0; background:#000; border:1px solid 
 </div>
 </div>
 </div>
-<div class="popup" id="s"><div class="box"><h2>⭐ <span data-key="st">Send Stars</span></h2><p data-key="std">Support us with Facebook Stars</p><button onclick="document.getElementById('s').style.display='none'" class="btn" style="background:#333; color:#fff; width:100%; margin-top:10px;" data-key="close">Close</button></div></div>
-<div class="popup" id="d"><div class="box"><h2>💰 <span data-key="dt">Donate</span></h2><p data-key="dtd">Send USDT to: TQn9YdTkv...YourWallet</p><button onclick="document.getElementById('d').style.display='none'" class="btn" style="background:#333; color:#fff; width:100%; margin-top:10px;" data-key="close">Close</button></div></div>
+<div class="popup" id="s"><div class="box"><h2>⭐ Send Stars</h2><button onclick="document.getElementById('s').style.display='none'" class="btn" style="background:#333; color:#fff; width:100%; margin-top:10px;">Close</button></div></div>
+<div class="popup" id="d"><div class="box"><h2>💰 Donate</h2><p>Send USDT to: TQn9YdTkv...YourWallet</p><button onclick="document.getElementById('d').style.display='none'" class="btn" style="background:#333; color:#fff; width:100%; margin-top:10px;">Close</button></div></div>
 <footer style="text-align:center; padding:30px; color:var(--muted);">© 2026 GoalPro ULTIMATE</footer>
 <script>
 let lang="en";
-const L={
-en:{stars:"Stars",donate:"Donate",tour:"All Tournaments 2026-2034",ucl:"UCL",epl:"Premier League",wc:"World Cup 2026",sl:"Saudi League",form:"Team Formation",players:"Player Profiles",wallet:"Wallet",walletd:"Receive payments directly to USDT",connect:"Connect Wallet",st:"Send Stars",std:"Support us with Facebook Stars",dt:"Donate",dtd:"Send USDT to:",close:"Close"},
-ar:{stars:"نجوم",donate:"تبرع",tour:"كل البطولات 2026-2034",ucl:"الابطال",epl:"الدوري الانجليزي",wc:"كاس العالم 2026",sl:"الدوري السعودي",form:"تشكيلة الفريق",players:"ملفات اللاعبين",wallet:"المحفظة",walletd:"استلم المدفوعات مباشرة USDT",connect:"ربط المحفظة",st:"ارسال نجوم",std:"ادعمنا بنجوم فيسبوك",dt:"تبرع",dtd:"ارسل USDT الى:",close:"اغلاق"},
-ru:{stars:"Звезды",donate:"Пожертвовать",tour:"Все турниры 2026-2034",ucl:"ЛЧ",epl:"АПЛ",wc:"ЧМ 2026",sl:"Сауд. Лига",form:"Состав команды",players:"Профили игроков",wallet:"Кошелек",walletd:"Получайте выплаты на USDT",connect:"Подключить",st:"Отправить звезды",std:"Поддержите нас",dt:"Пожертвовать",dtd:"Отправить USDT на:",close:"Закрыть"},
-zh:{stars:"星",donate:"捐赠",tour:"所有赛事 2026-2034",ucl:"欧冠",epl:"英超",wc:"世界杯2026",sl:"沙特联赛",form:"球队阵容",players:"球员资料",wallet:"钱包",walletd:"直接接收USDT付款",connect:"连接钱包",st:"发送星星",std:"用星星支持我们",dt:"捐赠",dtd:"发送USDT到:",close:"关闭"},
-hi:{stars:"स्टार्स",donate:"दान",tour:"सभी टूर्नामेंट 2026-2034",ucl:"UCL",epl:"प्रीमियर लीग",wc:"विश्व कप 2026",sl:"सऊदी लीग",form:"टीम संरचना",players:"खिलाड़ी प्रोफ़ाइल",wallet:"वॉलेट",walletd:"USDT पर सीधे भुगतान प्राप्त करें",connect:"वॉलेट कनेक्ट करें",st:"स्टार्स भेजें",std:"Facebook स्टार्स से समर्थन करें",dt:"दान",dtd:"USDT भेजें:",close:"बंद करें"}
-};
+const L={en:{stars:"Stars",donate:"Donate",tour:"All Tournaments 2026-2034",form:"Team Formation",players:"Player Profiles",wallet:"Wallet",walletd:"Receive payments directly to USDT",connect:"Connect Wallet",date:"Date:",teams:"Teams:",prize:"Prize:",desc:"Description:"},
+ar:{stars:"نجوم",donate:"تبرع",tour:"كل البطولات 2026-2034",form:"تشكيلة الفريق",players:"ملفات اللاعبين",wallet:"المحفظة",walletd:"استلم المدفوعات مباشرة USDT",connect:"ربط المحفظة",date:"التاريخ:",teams:"الفرق:",prize:"الجائزة:",desc:"الوصف:"}};
 function changeLang(){lang=document.getElementById("lang").value; document.querySelectorAll("[data-key]").forEach(el=>{if(L[lang][el.dataset.key]) el.innerText=L[lang][el.dataset.key];}); document.documentElement.dir=(lang=="ar")?"rtl":"ltr";}
 </script>
 </body>
