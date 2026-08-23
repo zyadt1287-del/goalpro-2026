@@ -1,96 +1,65 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GOALPRO ORANGE LIVE</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:#1A0F00;color:#fff;font-family:Arial;padding-bottom:170px}
-header{background:linear-gradient(90deg,#FF6A00,#FF3D00);padding:20px;text-align:center;border-bottom:3px solid #FFD700}
-h1{font-size:28px;font-weight:900}
-.search{margin:15px auto;display:block;padding:12px;width:90%;max-width:600px;border-radius:10px;border:2px solid #FF6A00;background:#000;color:#fff;font-size:16px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;padding:20px;max-width:1600px;margin:auto}
-.card{background:#2A1A00;border:1px solid #FF6A00;border-radius:10px;padding:15px;cursor:pointer}
-.card:hover{border-color:#FFD700;background:#FF6A00;color:#000}
-.card h3{color:#FFD700} .card:hover h3{color:#000}
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>GOALPRO ULTIMATE</title><style>body{background:#050811;color:#fff;font-family:Arial;margin:0;padding-bottom:160px}header{background:linear-gradient(90deg,#FF6A00,#000);padding:10px;display:flex;justify-content:space-around;border-bottom:3px solid #FFD700}nav a{color:#FFD700;text-decoration:none;font-weight:900;margin:0 5px}.grid{display:grid;grid-template-columns:2fr 1fr;gap:15px;padding:15px}.card{background:#0B1120;border:1px solid #FF6A00;border-radius:10px;padding:15px}.btn{background:#FFD700;color:#000;padding:10px;width:100%;margin-top:5px;border:none;border-radius:8px;font-weight:900;cursor:pointer}.btn:hover{background:#FF6A00;color:#fff}.bottom{position:fixed;bottom:0;left:0;width:100%;height:150px;background:#FF6A00;border-top:3px solid #FFD700;overflow:auto;padding:5px}</style></head><body>
+<header><b>GOAL PRO</b><nav><a>Home</a><a>Live</a><a>Tournaments</a><a>Formations</a><a>Profile</a><a>⭐ Stars</a><a>💰 Donate</a></nav></header>
 
-/* الشريط السفلي للمباريات */
-.bottom-news{position:fixed;bottom:0;left:0;width:100%;height:160px;background:linear-gradient(180deg,#FF6A00 0%,#000 100%);border-top:4px solid #FFD700;z-index:9999;padding:10px;overflow-y:auto}
-.match-header{text-align:center;font-weight:900;color:#FFD700;font-size:15px;margin-bottom:8px;background:#000;padding:4px;border-radius:5px}
-.match-row{background:#111;margin:5px 0;padding:8px;border-radius:8px;display:flex;justify-content:space-between;align-items:center}
-</style>
-</head>
-<body>
-<header>
-<h1>🏆 GOALPRO ORANGE LIVE</h1>
-<p>200+ Tournaments • مباريات مباشرة</p>
-</header>
+<h2 style="text-align:center;margin:10px">GoalPro - Like YallaShoot But Global</h2>
 
-<input type="text" id="search" class="search" placeholder="Search tournament... ابحث عن بطولة">
+<div class="grid">
+<div class="card"><h3>🏆 Top Tournaments</h3><p>UCL<br>Premier League<br>La Liga<br>Saudi League</p></div>
 
-<div class="grid" id="tournaments"></div>
+<div class="card"><h3>⚽ Team Formation 4-3-3</h3><p>ST ST<br>LM CM RM<br>LB CB RB<br>GK</p></div>
 
-<!-- الشريط السفلي -->
-<div class="bottom-news" id="bottomNews">
-<div class="match-header">جاري جلب المباريات المباشرة...</div>
+<div class="card"><h3>👤 Player Profile</h3><p><b>Lionel Messi</b><br>Argentina • 37 Years<br>Goals: 850</p><p><b>Cristiano Ronaldo</b><br>Portugal • 39 Years<br>Goals: 900</p></div>
+
+<div class="card"><h3>💳 Support Us - USDT</h3>
+<p>Donate 5 USDT TRC20 to support GoalPro</p>
+<p id="walletAddress" style="color:#00FF00;font-size:12px;word-break:break-all">Not Connected</p>
+<button class="btn" onclick="connectWallet()">Connect Wallet</button>
+<button class="btn" onclick="donate()">Donate 5 USDT ⭐</button>
+</div>
 </div>
 
+<div class="bottom" id="live">جاري جلب المباريات المباشرة...</div>
+
 <script>
-const API_KEY = "dda3b1feca8c5f85074600f98d2ff963"; // مفتاحك
+const API_KEY = "dda3b1feca8c5f85074600f98d2ff963";
 
-// 1. قائمة البطولات
-const tournaments = [
-{name:"UCL UEFA Champions League",info:"Europe • 36 Teams"},
-{name:"Premier League",info:"England • 20 Teams"},
-{name:"La Liga",info:"Spain • 20 Teams"},
-{name:"Bundesliga",info:"Germany • 18 Teams"},
-{name:"Serie A",info:"Italy • 20 Teams"},
-{name:"World Cup 2026",info:"FIFA • 48 Teams"},
-{name:"Saudi Pro League",info:"Saudi Arabia • 18 Teams"}
-];
-for(let i=1;i<=50;i++){tournaments.push({name:`League ${i} Worldwide`,info:`${16 + i%10} Teams`})}
+// عنوانك انت
+const myWallet = "TAVcAjW4AGXDe2rpycmVroPxfU3p2MZ59v"; 
 
-const grid = document.getElementById('tournaments');
-function render(list){
-grid.innerHTML = list.map(t=>`<div class="card"><h3>${t.name}</h3><p>${t.info}</p></div>`).join('');
-}
-render(tournaments);
+let tronWeb;
 
-document.getElementById('search').addEventListener('input',e=>{
-const val = e.target.value.toLowerCase();
-render(tournaments.filter(t=>t.name.toLowerCase().includes(val)||t.info.toLowerCase().includes(val)));
-});
-
-// 2. جلب المباريات المباشرة
-async function getLiveMatches() {
-  try{
-    const res = await fetch("https://v3.football.api-sports.io/fixtures?live=all", {
-      "method": "GET",
-      "headers": { "x-apisports-key": API_KEY }
-    });
-    const data = await res.json();
-    
-    let html = '<div class="match-header">⚽ LIVE NOW</div>';
-    if(data.response.length === 0) html = '<div class="match-header">لا توجد مباريات مباشرة الان</div>';
-    
-    data.response.slice(0,10).forEach(match => {
-      html += `<div class="match-row">
-        <span>${match.teams.home.name}</span>
-        <b style="color:#FFD700">${match.goals.home} - ${match.goals.away}</b>
-        <span>${match.teams.away.name}</span>
-      </div>
-      <small style="color:#aaa">${match.league.name} • د${match.fixture.status.elapsed}'</small>`;
-    });
-    
-    document.getElementById('bottomNews').innerHTML = html;
-  }catch(e){
-    document.getElementById('bottomNews').innerHTML = '<div class="match-header">خطأ في جلب البيانات</div>';
+// ربط Trust Wallet
+async function connectWallet(){
+  if(window.tronWeb && window.tronWeb.ready){
+    tronWeb = window.tronWeb;
+    document.getElementById('walletAddress').innerText = "Connected: " + tronWeb.defaultAddress.base58;
+  }else{
+    alert("افتح الموقع من داخل تطبيق Trust Wallet > تبويب DApp");
   }
 }
 
-getLiveMatches();
-setInterval(getLiveMatches, 60000); // يتحدث كل دقيقة
+// التبرع 5 USDT TRC20
+async function donate(){
+  if(!tronWeb) return alert("Connect Wallet First");
+  
+  let usdtContract = await tronWeb.contract().at("TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t");
+  let amount = 5000000; // 5 USDT
+  
+  usdtContract.transfer(myWallet, amount).send()
+  .then(res => alert("شكرا لدعمك! تم التحويل بنجاح ✅"))
+  .catch(err => alert("تم الالغاء"));
+}
+
+// المباريات المباشرة
+async function getLive(){
+try{
+let res = await fetch("https://v3.football.api-sports.io/fixtures?live=all",{headers:{"x-apisports-key":API_KEY}});
+let data = await res.json();
+let html = "<b>LIVE NOW</b><br>";
+data.response.slice(0,5).forEach(m=>{html+=`${m.teams.home.name} ${m.goals.home}-${m.goals.away} ${m.teams.away.name} د${m.fixture.status.elapsed}'<br>`});
+document.getElementById('live').innerHTML = html || "لا توجد مباريات";
+}catch(e){}
+}
+getLive(); setInterval(getLive,60000);
 </script>
-</body>
-</html>
+</body></html>
