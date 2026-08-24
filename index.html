@@ -1,14 +1,14 @@
-    <div class="wallet-section" style="background:#111; padding:15px; border-radius:10px; margin:10px 0; text-align:center;">
+<div class="wallet-section" style="background:#111; padding:15px; border-radius:10px; margin:10px 0; text-align:center;">
   <h3>💳 My Wallet</h3>
   <p>Connect your wallet to receive payments</p>
   <p><b>USDT:</b> TAVcAjW4AGXDe2rpycmVroPxfU3p2MZ59v</p>
   <p id="status" style="color:orange;">Not Connected</p>
 
-  <button id="connectBtn" onclick="connectWallet()" style="padding:10px 20px; background:blue; color:white; border:none; border-radius:5px;">Connect Wallet</button>
+  <button id="connectBtn" onclick="connectWallet()" style="padding:10px 20px; background:#1e90ff; color:white; border:none; border-radius:5px; font-size:16px;">Connect Wallet</button>
 
   <div id="donateButtons" style="display:none; margin-top:15px;">
-    <button onclick="donate('5')" style="padding:10px 20px; background:gold; color:black; border:none; border-radius:5px; margin:5px;">Donate 5 USDT ⭐</button>
-    <button onclick="donate('0.01')" style="padding:10px 20px; background:green; color:white; border:none; border-radius:5px; margin:5px;">تجربة 0.01 USDT</button>
+    <button onclick="donate('5')" style="padding:10px 20px; background:gold; color:black; border:none; border-radius:5px; margin:5px; font-weight:bold;">Donate 5 USDT ⭐</button>
+    <button onclick="donate('0.01')" style="padding:10px 20px; background:green; color:white; border:none; border-radius:5px; margin:5px; font-weight:bold;">تجربة 0.01 USDT</button>
   </div>
 </div>
 
@@ -38,9 +38,9 @@ async function donate(amount) {
   const contract = new web3.eth.Contract([{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[{"name":"","type":"bool"}],"type":"function"}], USDT_CONTRACT);
   try {
     await contract.methods.transfer(YOUR_WALLET, usdtAmount).send({from: userAddress});
-    alert("تم التحويل بنجاح! " + amount + " USDT");
+    alert("✅ تم التحويل بنجاح! " + amount + " USDT");
   } catch (error) {
-    alert("تم الغاء التحويل");
+    alert("❌ تم الغاء التحويل");
   }
 }
 </script>
