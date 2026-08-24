@@ -1,67 +1,47 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>GOALPRO</title><style>body{background:#050811;color:#fff;font-family:Arial;margin:0;padding-bottom:160px}header{background:linear-gradient(90deg,#FF6A00,#000);padding:10px;display:flex;justify-content:space-around;border-bottom:3px solid #FFD700}nav a{color:#FFD700;text-decoration:none;font-weight:900;margin:0 8px}.ad728{width:728px;height:90px;background:#222;margin:10px auto;text-align:center;line-height:90px;border:1px dashed #FFD700}.grid{display:grid;grid-template-columns:2fr 1fr;gap:15px;padding:15px}.card{background:#0B1120;border:1px solid #FF6A00;border-radius:10px;padding:15px}.btn{background:#FFD700;color:#000;padding:10px;width:100%;margin-top:5px;border:none;border-radius:8px;font-weight:900;cursor:pointer}.btn:hover{background:#FF6A00;color:#fff}.ad300{width:300px;height:250px;background:#222;margin:10px auto;text-align:center;line-height:250px;border:1px dashed #FFD700}.bottom{position:fixed;bottom:0;left:0;width:100%;height:150px;background:#FF6A00;border-top:3px solid #FFD700;overflow:auto;padding:5px}</style></head><body>
-<header><b>GOAL PRO</b><nav><a>Home</a><a>Live</a><a>Tournaments</a><a>Formations</a><a>Profile</a><a>⭐ Stars</a><a>💰 Donate</a><a>English</a></nav></header>
+<div class="wallet-section">
+  <h3>💳 My Wallet</h3>
+  <p>Connect your wallet to receive payments</p>
+  <p>USDT Wallet Address: TAVcAjW4AGXDe2rpycmVroPxfU3p2MZ59v</p>
+  <p id="status">Not Connected</p>
 
-<div class="ad728">ADVERTISEMENT - Google AdSense 728x90</div>
+  <button id="connectBtn" onclick="connectWallet()">Connect Wallet</button>
 
-<h2 style="text-align:center;margin:10px">GoalPro - Like YallaShoot But Global</h2>
-
-<div class="grid">
-<div>
-<div class="card"><h3>🏆 Top Tournaments</h3><p>UCL<br>Premier League<br>La Liga<br>Saudi League</p></div>
-
-<div class="card"><h3>⚽ Team Formation 4-3-3</h3><p>ST ST<br>LM CM CM CM RM<br>LB CB RB<br>GK</p></div>
-
-<div class="card"><h3>👤 Player Profile</h3><p><b>Lionel Messi</b><br>Argentina • 37 Years<br>Goals: 850</p><p><b>Cristiano Ronaldo</b><br>Portugal • 39 Years<br>Goals: 900</p></div>
+  <div id="donateButtons" style="display:none; margin-top:15px;">
+    <button onclick="donate('5')">Donate 5 USDT ⭐</button>
+    <button onclick="donate('0.01')" style="background:green;">تجربة 0.01 USDT</button>
+  </div>
 </div>
-
-<div>
-<div class="card"><h3>💳 My Wallet</h3>
-<p>Connect your wallet to receive payments</p>
-<p><b>USDT Wallet Address:</b></p>
-<p id="myAddress" style="color:#00FF00;font-size:11px;word-break:break-all">TAVcAjW4AGXDe2rpycmVroPxfU3p2MZ59v</p>
-<p id="walletStatus" style="color:#FFD700;font-size:12px">Not Connected</p>
-<button class="btn" onclick="connectWallet()">Connect Wallet</button>
-<button class="btn" onclick="donate()">Donate 5 USDT ⭐</button>
-</div>
-
-<div class="ad300">AD 300x250</div>
-</div>
-</div>
-
-<div class="bottom" id="live">جاري جلب المباريات المباشرة...</div>
 
 <script>
-const API_KEY = "dda3b1feca8c5f85074600f98d2ff963";
-const myWallet = "TAVcAjW4AGXDe2rpycmVroPxfU3p2MZ59v"; 
-let tronWeb;
+let web3;
+let userAddress;
+const USDT_CONTRACT = "0x55d398326b99059fF775485246999027B3197955"; // USDT BSC
+const YOUR_WALLET = "TAVcAjW4AGXDe2rpycmVroPxfU3p2MZ59v";
 
-async function connectWallet(){
-  if(window.tronWeb && window.tronWeb.ready){
-    tronWeb = window.tronWeb;
-    document.getElementById('walletStatus').innerText = "Connected: " + tronWeb.defaultAddress.base58;
-  }else{
-    alert("افتح الموقع من داخل تطبيق Trust Wallet > تبويب DApp");
+async function connectWallet() {
+  if (window.ethereum) {
+    web3 = new Web3(window.ethereum);
+    const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+    userAddress = accounts[0];
+    document.getElementById("status").innerText = "Connected: " + userAddress;
+    document.getElementById("donateButtons").style.display = "block";
+    document.getElementById("connectBtn").style.display = "none";
+  } else {
+    alert("افتح الموقع من داخل Trust Wallet DApp");
   }
 }
 
-async function donate(){
-  if(!tronWeb) return alert("Connect Wallet First");
-  let usdtContract = await tronWeb.contract().at("TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t");
-  let amount = 5000000;
-  usdtContract.transfer(myWallet, amount).send()
-  .then(res => alert("شكرا لدعمك! تم التحويل بنجاح ✅"))
-  .catch(err => alert("تم الالغاء"));
-}
+async function donate(amount) {
+  const usdtAmount = web3.utils.toWei(amount, 'mwei'); // USDT = 6 decimals
+  const contract = new web3.eth.Contract([
+    {"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[{"name":"","type":"bool"}],"type":"function"}
+  ], USDT_CONTRACT);
 
-async function getLive(){
-try{
-let res = await fetch("https://v3.football.api-sports.io/fixtures?live=all",{headers:{"x-apisports-key":API_KEY}});
-let data = await res.json();
-let html = "<b>LIVE NOW</b><br>";
-data.response.slice(0,5).forEach(m=>{html+=`${m.teams.home.name} ${m.goals.home}-${m.goals.away} ${m.teams.away.name} د${m.fixture.status.elapsed}'<br>`});
-document.getElementById('live').innerHTML = html || "لا توجد مباريات";
-}catch(e){}
+  try {
+    await contract.methods.transfer(YOUR_WALLET, usdtAmount).send({from: userAddress});
+    alert("تم التحويل بنجاح! " + amount + " USDT");
+  } catch (error) {
+    alert("تم الغاء التحويل");
+  }
 }
-getLive(); setInterval(getLive,60000);
 </script>
-</body></html>
