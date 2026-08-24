@@ -1,0 +1,83 @@
+<!DOCTYPE html><html lang="en" dir="ltr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>GOALPRO ORANGE</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#050811;color:#fff;font-family:Arial;margin:0;padding-bottom:160px}
+header{background:linear-gradient(90deg,#FF6A00,#FF8C00);padding:15px;text-align:center;border-bottom:4px solid #FFD700;position:sticky;top:0;z-index:10}
+header b{font-size:24px;color:#FFD700;letter-spacing:2px}
+h2{text-align:center;margin:15px 0 5px 0;color:#FF6A00;font-size:22px}
+h3{text-align:center;margin:0 0 15px 0;color:#aaa;font-weight:400}
+.grid{display:grid;grid-template-columns:1fr;gap:15px;padding:15px;max-width:1000px;margin:auto}
+.card{background:#0B1120;border:2px solid #FF6A00;border-radius:12px;padding:15px}
+.search-box{width:100%;padding:12px;border-radius:8px;border:2px solid #FF6A00;background:#000;color:#fff;margin-bottom:15px;font-size:16px;outline:none}
+.search-box:focus{border-color:#FFD700}
+.tournament{padding:10px;border-bottom:1px solid #2a2a2a;cursor:pointer;transition:0.2s}
+.tournament:hover{background:#1a1a1a;border-left:3px solid #FF6A00;padding-left:7px}
+.tournament small{color:#aaa;font-size:12px}
+.bottom{position:fixed;bottom:0;left:0;width:100%;height:150px;background:#FF6A00;border-top:4px solid #FFD700;overflow:auto;padding:10px;color:#000;font-weight:bold}
+</style></head><body>
+
+<header><b>GOALPRO ORANGE</b></header>
+
+<h2>🏆 200+ Worldwide Tournaments</h2>
+<h3>2026-2034</h3>
+
+<div class="grid">
+  <div class="card">
+    <input type="text" id="searchInput" onkeyup="searchTournament()" placeholder="Search tournament... ابحث عن بطولة" class="search-box">
+    <div id="tournamentsList"></div>
+  </div>
+</div>
+
+<div class="bottom" id="live">جاري جلب المباريات المباشرة...</div>
+
+<script>
+// قائمة البطولات الاساسية
+const tournaments = [
+  {name:"UCL", info:"UEFA Champions League • Europe"},
+  {name:"Premier League", info:"England • 20 Teams"},
+  {name:"La Liga", info:"Spain • 20 Teams"},
+  {name:"Bundesliga", info:"Germany • 18 Teams"},
+  {name:"Serie A", info:"Italy • 20 Teams"},
+  {name:"World Cup 2026", info:"FIFA • 48 Teams"},
+  {name:"Euro 2028", info:"UEFA • 24 Teams"},
+  {name:"Saudi Pro League", info:"Saudi Arabia • 18 Teams"},
+  {name:"MLS", info:"USA • 30 Teams"}
+];
+
+// يولد League 1 لحد 191 اوتوماتيك
+for(let i=1; i<=191; i++){
+  let teams = 16 + (i % 10); // يخلي عدد الفرق يتغير
+  tournaments.push({name:`League ${i} Worldwide`, info:`${teams} Teams`});
+}
+
+// يعرضهم في الصفحة
+let html = "";
+tournaments.forEach(t=>{
+  html += `<div class="tournament">${t.name}<br><small>${t.info}</small></div>`;
+});
+document.getElementById('tournamentsList').innerHTML = html;
+
+// البحث
+function searchTournament() {
+  let input = document.getElementById('searchInput').value.toLowerCase();
+  let items = document.getElementsByClassName('tournament');
+  for (let i = 0; i < items.length; i++) {
+    let txt = items[i].innerText.toLowerCase();
+    items[i].style.display = txt.includes(input)? "" : "none";
+  }
+}
+
+// المباريات المباشرة
+const API_KEY = "dda3b1feca8c5f85074600f98d2ff963";
+async function getLive(){
+  try{
+    let res = await fetch("https://v3.football.api-sports.io/fixtures?live=all",{headers:{"x-apisports-key":API_KEY}});
+    let data = await res.json();
+    let html = "<b>LIVE NOW</b><br>";
+    data.response.slice(0,8).forEach(m=>{html+=`${m.teams.home.name} ${m.goals.home}-${m.goals.away} ${m.teams.away.name} د${m.fixture.status.elapsed}'<br>`});
+    document.getElementById('live').innerHTML = html || "لا توجد مباريات مباشرة";
+  }catch(e){document.getElementById('live').innerHTML = "خطأ في جلب المباريات"}
+}
+getLive();
+setInterval(getLive,60000);
+</script>
+</body></html>
