@@ -1,47 +1,5 @@
-<div class="wallet-section">
-  <h3>💳 My Wallet</h3>
-  <p>Connect your wallet to receive payments</p>
-  <p>USDT Wallet Address: TAVcAjW4AGXDe2rpycmVroPxfU3p2MZ59v</p>
-  <p id="status">Not Connected</p>
+👤 Player Profile 
+Lionel Messi Argentina • 37 Years Goals: 850 
+Cristiano Ronaldo Portugal • 39 Years Goals: 900 
 
-  <button id="connectBtn" onclick="connectWallet()">Connect Wallet</button>
-
-  <div id="donateButtons" style="display:none; margin-top:15px;">
-    <button onclick="donate('5')">Donate 5 USDT ⭐</button>
-    <button onclick="donate('0.01')" style="background:green;">تجربة 0.01 USDT</button>
-  </div>
-</div>
-
-<script>
-let web3;
-let userAddress;
-const USDT_CONTRACT = "0x55d398326b99059fF775485246999027B3197955"; // USDT BSC
-const YOUR_WALLET = "TAVcAjW4AGXDe2rpycmVroPxfU3p2MZ59v";
-
-async function connectWallet() {
-  if (window.ethereum) {
-    web3 = new Web3(window.ethereum);
-    const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-    userAddress = accounts[0];
-    document.getElementById("status").innerText = "Connected: " + userAddress;
-    document.getElementById("donateButtons").style.display = "block";
-    document.getElementById("connectBtn").style.display = "none";
-  } else {
-    alert("افتح الموقع من داخل Trust Wallet DApp");
-  }
-}
-
-async function donate(amount) {
-  const usdtAmount = web3.utils.toWei(amount, 'mwei'); // USDT = 6 decimals
-  const contract = new web3.eth.Contract([
-    {"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[{"name":"","type":"bool"}],"type":"function"}
-  ], USDT_CONTRACT);
-
-  try {
-    await contract.methods.transfer(YOUR_WALLET, usdtAmount).send({from: userAddress});
-    alert("تم التحويل بنجاح! " + amount + " USDT");
-  } catch (error) {
-    alert("تم الغاء التحويل");
-  }
-}
-</script>
+💳 My Wallet  <-- هنا الصق الكود الجديد
