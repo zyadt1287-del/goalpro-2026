@@ -1,46 +1,41 @@
-<div class="wallet-section" style="background:#111; padding:15px; border-radius:10px; margin:10px 0; text-align:center;">
+<div style="background:#111; padding:15px; border-radius:10px; text-align:center;">
   <h3>💳 My Wallet</h3>
   <p>Connect your wallet to receive payments</p>
   <p><b>USDT:</b> TAVcAjW4AGXDe2rpycmVroPxfU3p2MZ59v</p>
   <p id="status" style="color:orange;">Not Connected</p>
 
-  <button id="connectBtn" onclick="connectWallet()" style="padding:10px 20px; background:#1e90ff; color:white; border:none; border-radius:5px; font-size:16px;">Connect Wallet</button>
+  <button id="connectBtn" onclick="connectWallet()" style="padding:10px 20px; background:#1e90ff; color:white; border:none; border-radius:5px;">Connect Wallet</button>
 
   <div id="donateButtons" style="display:none; margin-top:15px;">
-    <button onclick="donate('5')" style="padding:10px 20px; background:gold; color:black; border:none; border-radius:5px; margin:5px; font-weight:bold;">Donate 5 USDT ⭐</button>
-    <button onclick="donate('0.01')" style="padding:10px 20px; background:green; color:white; border:none; border-radius:5px; margin:5px; font-weight:bold;">تجربة 0.01 USDT</button>
+    <button onclick="donate('5')" style="padding:10px 15px; background:gold; color:black; border:none; border-radius:5px; margin:5px;">Donate 5 USDT ⭐</button>
+    <button onclick="donate('0.01')" style="padding:10px 15px; background:green; color:white; border:none; border-radius:5px; margin:5px;">تجربة 0.01 USDT</button>
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
 <script>
-let web3;
-let userAddress;
+let web3, userAddress;
 const USDT_CONTRACT = "0x55d398326b99059fF775485246999027B3197955";
 const YOUR_WALLET = "TAVcAjW4AGXDe2rpycmVroPxfU3p2MZ59v";
 
-async function connectWallet() {
-  if (window.ethereum) {
+async function connectWallet(){
+  if(window.ethereum){
     web3 = new Web3(window.ethereum);
-    const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+    const accounts = await ethereum.request({method:'eth_requestAccounts'});
     userAddress = accounts[0];
     document.getElementById("status").innerText = "Connected: " + userAddress.slice(0,6) + "...";
     document.getElementById("status").style.color = "lightgreen";
     document.getElementById("donateButtons").style.display = "block";
     document.getElementById("connectBtn").style.display = "none";
-  } else {
-    alert("افتح الموقع من داخل Trust Wallet > DApp");
-  }
+  }else{ alert("افتح الموقع من Trust Wallet DApp"); }
 }
 
-async function donate(amount) {
+async function donate(amount){
   const usdtAmount = web3.utils.toWei(amount, 'mwei');
   const contract = new web3.eth.Contract([{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[{"name":"","type":"bool"}],"type":"function"}], USDT_CONTRACT);
-  try {
+  try{
     await contract.methods.transfer(YOUR_WALLET, usdtAmount).send({from: userAddress});
-    alert("✅ تم التحويل بنجاح! " + amount + " USDT");
-  } catch (error) {
-    alert("❌ تم الغاء التحويل");
-  }
+    alert("✅ تم التحويل " + amount + " USDT");
+  }catch(e){ alert("❌ تم الالغاء"); }
 }
 </script>
