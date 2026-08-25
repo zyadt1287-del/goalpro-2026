@@ -30,7 +30,6 @@ h3{text-align:center;margin:0 0 15px 0;color:#aaa;font-weight:400}
 <div class="bottom" id="live">جاري جلب المباريات المباشرة...</div>
 
 <script>
-// قائمة البطولات الاساسية
 const tournaments = [
   {name:"UCL", info:"UEFA Champions League • Europe"},
   {name:"Premier League", info:"England • 20 Teams"},
@@ -42,21 +41,16 @@ const tournaments = [
   {name:"Saudi Pro League", info:"Saudi Arabia • 18 Teams"},
   {name:"MLS", info:"USA • 30 Teams"}
 ];
-
-// يولد League 1 لحد 191 اوتوماتيك
 for(let i=1; i<=191; i++){
   let teams = 16 + (i % 10);
   tournaments.push({name:`League ${i} Worldwide`, info:`${teams} Teams`});
 }
-
-// يعرضهم في الصفحة
 let html = "";
 tournaments.forEach(t=>{
   html += `<div class="tournament">${t.name}<br><small>${t.info}</small></div>`;
 });
 document.getElementById('tournamentsList').innerHTML = html;
 
-// البحث
 function searchTournament() {
   let input = document.getElementById('searchInput').value.toLowerCase();
   let items = document.getElementsByClassName('tournament');
@@ -66,7 +60,6 @@ function searchTournament() {
   }
 }
 
-// المباريات المباشرة
 const API_KEY = "dda3b1feca8c5f85074600f98d2ff963";
 async function getLive(){
   try{
