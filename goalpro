@@ -1,108 +1,92 @@
-<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>GOALPRO ORANGE</title><style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial}
-body{background:#050811;color:#fff;padding-bottom:180px}
-header{background:linear-gradient(90deg,#FF6A00,#FF8C00);padding:15px;text-align:center;border-bottom:4px solid #FFD700;position:sticky;top:0;z-index:10}
-header b{font-size:26px;color:#FFD700;letter-spacing:2px}
-h2{text-align:center;margin:15px 0 5px 0;color:#FF6A00;font-size:22px}
-h3{text-align:center;margin:0 0 15px 0;color:#aaa;font-weight:400}
-.grid{display:grid;grid-template-columns:1fr;gap:15px;padding:15px;max-width:1200px;margin:auto}
-.card{background:#0B1120;border:2px solid #FF6A00;border-radius:12px;padding:15px}
-.search-box{width:100%;padding:12px;border-radius:8px;border:2px solid #FF6A00;background:#000;color:#fff;margin-bottom:15px;font-size:16px;outline:none}
-.tournament{padding:12px;border-bottom:1px solid #2a2a2a;cursor:pointer;transition:0.2s;border-radius:6px}
-.tournament:hover{background:#1a1a1a;border-left:4px solid #FF6A00;padding-left:8px}
-.bottom{position:fixed;bottom:0;left:0;width:100%;height:170px;background:#FF6A00;border-top:4px solid #FFD700;overflow:auto;padding:10px;color:#000}
-.news{padding:15px;background:#0B1120;margin:15px;border-radius:12px;border:2px solid #FF6A00}
-.news h4{color:#FF6A00;margin-bottom:10px}
-.btn{background:#FFD700;color:#000;border:none;padding:8px 12px;border-radius:6px;font-weight:bold;cursor:pointer;margin:5px 3px;font-size:12px}
-.btn-stars{background:#FF6A00;color:#fff}
-.match-box{background:#111;padding:10px;margin:10px 0;border-radius:8px;border:1px solid #333;color:#fff}
-.match-box b{color:#FF6A00}
+<!DOCTYPE html><html lang="ar" dir="rtl"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GOALPRO ORANGE - بث مباشر ونتائج لحظية</title>
+<style>
+:root{--orange:#FF6A00;--dark:#0A0F1A;--card:#111827;--gold:#FFD700}
+*{box-sizing:border-box;font-family:'Segoe UI',Arial}
+body{background:var(--dark);color:#fff;margin:0}
+header{position:relative;padding:20px;text-align:center;background:#000;border-bottom:2px solid var(--orange)}
+#logo:hover #ball{filter:url(#glow)}
+#logo:hover text{animation:shine 1s}
+@keyframes shine{0%{opacity:0.5} 50%{opacity:1;filter:url(#glow)} 100%{opacity:1}}
+.nav a{color:var(--gold);margin:0 15px;text-decoration:none;font-weight:600}
+.container{max-width:1200px;margin:auto;padding:20px}
+.card{background:var(--card);padding:15px;border-radius:12px;margin:10px 0;cursor:pointer}
+.card:hover{background:#1F2937}
+.match{display:flex;justify-content:space-between;align-items:center}
+.score{font-size:24px;font-weight:800;color:var(--orange)}
+#connectWallet{background:#3375BB;position:absolute;left:20px;top:15px;color:#fff;border:none;padding:8px 16px;border-radius:20px;font-weight:600;cursor:pointer}
+#walletLink{position:absolute;left:170px;top:20px;color:var(--gold);text-decoration:none}
 </style></head><body>
 
-<header><b>GOALPRO ORANGE</b></header>
+<header>
+<a href="index.html">
+<svg id="logo" width="220" height="45" viewBox="0 0 220 45"><defs>
+<linearGradient id="orangeGrad"><stop offset="0%" stop-color="#FF6A00"/><stop offset="100%" stop-color="#FFD700"/></linearGradient>
+<filter id="glow"><feGaussianBlur stdDeviation="2.5"/></filter></defs>
+<g id="ball"><circle cx="22" cy="22.5" r="18" fill="url(#orangeGrad)"/>
+<animateTransform attributeName="transform" type="rotate" from="0 22 22.5" to="360 22 22.5" dur="3s" repeatCount="indefinite"/></g>
+<text x="50" y="28" font-size="22" font-weight="800" fill="url(#orangeGrad)">GOALPRO</text>
+<text x="50" y="40" font-size="12" font-weight="600" fill="#FFD700">ORANGE</text></svg></a>
 
-<h2>🏆 200+ بطولة عالمية</h2>
-<h3>2026-2034</h3>
+<button id="connectWallet" onclick="connectWallet()">🔗 ربط المحفظة</button>
+<a id="walletLink" href="wallet.html">💰 المحفظة</a>
+</header>
 
-<div class="grid">
-  <div class="card">
-    <input type="text" id="searchInput" onkeyup="searchTournament()" placeholder="ابحث عن بطولة..." class="search-box">
-    <div id="tournamentsList"></div>
-  </div>
+<div class="nav" style="text-align:center;padding:15px;background:#111">
+<a href="index.html">الرئيسية</a>
+<a href="schedule.html">جدول اليوم</a>
+<a href="league.html">الترتيب</a>
+<a href="news.html">الاخبار</a>
 </div>
 
-<div class="news">
-  <h4>📰 اخر الاخبار</h4>
-  <div id="newsList">جاري جلب الاخبار...</div>
+<div class="container">
+<h2>المباريات المباشرة 🔴</h2>
+<div id="liveMatches">جاري التحميل...</div>
 </div>
 
-<div class="bottom" id="live">جاري جلب المباريات المباشرة...</div>
-
+<script src="https://cdn.jsdelivr.net/npm/web3@1.8.2/dist/web3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@walletconnect/web3-provider@1.8.0/dist/umd/index.min.js"></script>
 <script>
 const API_KEY = "dda3b1feca8c5f85074600f98d2ff963";
 
-const tournaments = [
-  {name:"دوري ابطال اوروبا", info:"UCL • Europe", id:2},
-  {name:"الدوري الانجليزي", info:"Premier League • 20 فريق", id:39},
-  {name:"الدوري الاسباني", info:"La Liga • 20 فريق", id:140},
-  {name:"الدوري الالماني", info:"Bundesliga • 18 فريق", id:78},
-  {name:"الدوري الايطالي", info:"Serie A • 20 فريق", id:135},
-  {name:"كاس العالم 2026", info:"FIFA • 48 فريق", id:1},
-  {name:"الدوري السعودي", info:"Saudi Pro League • 18 فريق", id:307},
-  {name:"الدوري المصري", info:"Egyptian Premier League", id:233},
-  {name:"الدوري المغربي", info:"Botola Pro", id:277},
-  {name:"الدوري الجزائري", info:"Ligue 1", id:168},
-  {name:"الدوري التونسي", info:"Ligue 1", id:256},
-  {name:"دوري ابطال اسيا", info:"AFC Champions League", id:2},
-  {name:"كاس الامم الافريقية", id:4},
-  {name:"الدوري الامريكي", info:"MLS • 30 فريق", id:253},
-  {name:"الدوري الفرنسي", info:"Ligue 1 • 20 فريق", id:61}
-];
-for(let i=1; i<=186; i++){
-  let teams = 16 + (i % 10);
-  tournaments.push({name:`دوري ${i} عالمي`, info:`${teams} فريق`});
+async function loadLive(){
+  let res = await fetch("https://v3.football.api-sports.io/fixtures?live=all",{headers:{"x-apisports-key":API_KEY}});
+  let data = await res.json();
+  let html = "";
+  data.response.slice(0,5).forEach(m=>{
+    html += `<div class="card match" onclick="location='match.html?id=${m.fixture.id}'">
+      <div><img src="${m.teams.home.logo}" width="25"> ${m.teams.home.name} vs <img src="${m.teams.away.logo}" width="25"> ${m.teams.away.name}</div>
+      <div class="score">${m.goals.home} - ${m.goals.away}</div>
+      <div>${m.fixture.status.elapsed}'</div>
+    </div>`;
+  });
+  document.getElementById('liveMatches').innerHTML = html || "لا توجد مباريات الان";
 }
+loadLive(); setInterval(loadLive, 10000);
 
-let html = "";
-tournaments.forEach(t=>{
-  html += `<div class="tournament">${t.name}<br><small style="color:#aaa">${t.info}</small></div>`;
+// كود ربط Trust Wallet
+async function connectWallet(){
+  const provider = new WalletConnectProvider.default({rpc: {56: "https://bsc-dataseed.binance.org/"}});
+  await provider.enable();
+  const web3 = new Web3(provider);
+  const accounts = await web3.eth.getAccounts();
+  document.getElementById('connectWallet').innerText = '✅ ' + accounts[0].slice(0,6) + '...' + accounts[0].slice(-4);
+  localStorage.setItem('wallet', accounts[0]);
+}
+</script></body></html>
+2. match.html
+html
+<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><title>تفاصيل المباراة</title>
+<style>:root{--orange:#FF6A00;--dark:#0A0F1A;--card:#111827}body{background:var(--dark);color:#fff;font-family:Arial;text-align:center;padding:20px}</style></head><body>
+<h2 id="title">تحميل...</h2><div id="details"></div>
+<script>
+const API_KEY = "dda3b1feca8c5f85074600f98d2ff963";
+const id = new URLSearchParams(location.search).get('id');
+fetch(`https://v3.football.api-sports.io/fixtures?id=${id}`,{headers:{"x-apisports-key":API_KEY}})
+.then(r=>r.json()).then(d=>{
+  let m=d.response[0];
+  document.getElementById('title').innerText = `${m.teams.home.name} vs ${m.teams.away.name}`;
+  document.getElementById('details').innerHTML = `<h1>${m.goals.home} - ${m.goals.away}</h1><p>الدقيقة: ${m.fixture.status.elapsed}'</p>`;
 });
-document.getElementById('tournamentsList').innerHTML = html;
-
-function searchTournament() {
-  let input = document.getElementById('searchInput').value.toLowerCase();
-  let items = document.getElementsByClassName('tournament');
-  for (let i = 0; i < items.length; i++) {
-    let txt = items[i].innerText.toLowerCase();
-    items[i].style.display = txt.includes(input)? "" : "none";
-  }
-}
-
-async function getLive(){
-  try{
-    let res = await fetch("https://v3.football.api-sports.io/fixtures?live=all",{headers:{"x-apisports-key":API_KEY}});
-    let data = await res.json();
-    let html = "<b style='color:#000'>LIVE NOW 🔴</b><br>";
-    if(data.response.length === 0) html += "لا توجد مباريات مباشرة";
-    data.response.slice(0,5).forEach(m=>{
-      html+=`<div class="match-box">
-      <b>${m.league.name}</b><br>
-      ${m.teams.home.name} ${m.goals.home}-${m.goals.away} ${m.teams.away.name} <b>د${m.fixture.status.elapsed}'</b>
-      <br>
-      <button class="btn" onclick="alert('شكرا لدعمك ❤️ التبرع اختياري')">دعم البث</button>
-      <button class="btn btn-stars" onclick="alert('تم ارسال ${Math.floor(Math.random()*50)+1} نجمة ⭐ شكرا لك')">ارسال نجوم ⭐</button>
-      </div>`;
-    });
-    document.getElementById('live').innerHTML = html;
-  }catch(e){document.getElementById('live').innerHTML = "خطأ في جلب المباريات"}
-}
-
-function getNews(){
-  document.getElementById('newsList').innerHTML =
-  "1- مان سيتي يتصدر الدوري الانجليزي <br> 2- الهلال يفوز 4-0 في الدوري السعودي <br> 3- الاهلي يستعد لدوري الابطال";
-}
-
-getLive(); getNews();
-setInterval(getLive,60000);
-</script>
-</body></html>
+</script></body></html>
