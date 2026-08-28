@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>GOALPRO ORANGE 🏆</title>
+<style>
+  body { background: #0f0f0f; color: white; font-family: 'Tajawal', sans-serif; margin: 0; padding: 20px; }
+  .header { background: linear-gradient(90deg, #ff6a00, #ff9500); padding: 20px; border-radius: 15px; text-align: center; }
+  .header h1 { margin: 0; font-size: 32px; }
+  .wallet-btn { background: #ff6a00; color: white; border: none; padding: 12px 25px; border-radius: 10px; font-size: 16px; cursor: pointer; margin-top: 10px; }
+  .wallet-btn:hover { background: #ff9500; }
+  .tournament { background: #1a1a1a; margin: 10px 0; padding: 15px; border-radius: 10px; border-right: 4px solid #ff6a00; }
+  .live { color: #ff3b30; font-weight: bold; }
+  input { width: 100%; padding: 10px; border-radius: 8px; border: none; margin: 15px 0; background: #2a2a2a; color: white; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>GOALPRO ORANGE 🏆</h1>
+  <p>200+ Worldwide Tournaments 2026-2034</p>
+  <button class="wallet-btn" onclick="connectWallet()">🔗 ربط Trust Wallet</button>
+  <p id="walletAddress"></p>
+</div>
+
+<input type="text" placeholder="Search tournament... ابحث عن بطولة" id="search">
+
+<div id="tournaments">
+  <div class="tournament">UCL UEFA Champions League • Europe</div>
+  <div class="tournament">Premier League England • 20 Teams</div>
+  <div class="tournament">La Liga Spain • 20 Teams</div>
+  <div class="tournament">World Cup 2026 FIFA • 48 Teams</div>
+</div>
+
+<h3 class="live">LIVE NOW</h3>
+<div class="tournament">Mixco 1-0 Alianza FC د72'</div>
+<div class="tournament">CD Olimpia 2-0 Deportivo Saprissa د70'</div>
+
+<script>
+async function connectWallet() {
+  if (window.tronWeb) {
+    try {
+      await window.tronWeb.request({method: 'tron_requestAccounts'})
+      const address = window.tronWeb.defaultAddress.base58;
+      document.getElementById('walletAddress').innerText = "✅ متصل: " + address;
+    } catch (e) {
+      alert("تم رفض الاتصال");
+    }
+  } else {
+    alert("نزل Trust Wallet من المتجر وافتح الموقع من داخل التطبيق");
+  }
+}
+</script>
+
+</body>
+</html>
