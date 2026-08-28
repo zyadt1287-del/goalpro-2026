@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GOALPRO ORANGE</title>
+  <style>
+    body {
+      background: #000;
+      color: #fff;
+      font-family: 'Cairo', sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+   .header {
+      background: linear-gradient(90deg, #FF8C00, #FF4500);
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+    }
+    h1 {
+      color: #FFA500;
+      font-size: 28px;
+      margin: 0;
+    }
+   .connect-btn {
+      background: linear-gradient(90deg, #FF8C00, #FF4500);
+      color: #fff;
+      border: none;
+      padding: 15px 30px;
+      font-size: 18px;
+      font-weight: bold;
+      border-radius: 12px;
+      cursor: pointer;
+      margin: 20px 0;
+      box-shadow: 0 0 20px rgba(255, 140, 0, 0.5);
+    }
+   .connect-btn:hover {
+      transform: scale(1.05);
+    }
+   .wallet-address {
+      color: #00FF00;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+    input {
+      width: 90%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 2px solid #FF8C00;
+      background: #111;
+      color: #fff;
+      font-size: 16px;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>🏆 GOALPRO ORANGE</h1>
+    <p>200+ Worldwide Tournaments 2026-2034</p>
+  </div>
+
+  <button class="connect-btn" id="connectBtn">🔗 ربط Trust Wallet</button>
+  <div class="wallet-address" id="walletAddress"></div>
+
+  <input type="text" placeholder="Search tournament... ابحث عن بطولة">
+
+  <h2>UCL UEFA Champions League • Europe</h2>
+  <h2>Premier League England • 20 Teams</h2>
+  <h2>La Liga Spain • 20 Teams</h2>
+  <h2>Bundesliga Germany • 18 Teams</h2>
+  <h2>Serie A Italy • 20 Teams</h2>
+  <h2>World Cup 2026 FIFA • 48 Teams</h2>
+  <h2>Euro 2028 UEFA • 24 Teams</h2>
+  <h2>Saudi Pro League Saudi Arabia • 18 Teams</h2>
+  <h2>MLS USA • 30 Teams</h2>
+
+  <script>
+    const connectBtn = document.getElementById('connectBtn');
+    const walletAddress = document.getElementById('walletAddress');
+
+    connectBtn.onclick = async () => {
+      if (typeof window.ethereum!== 'undefined') {
+        try {
+          const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+          const address = accounts[0];
+          walletAddress.innerText = `✅ متصل: ${address.slice(0,6)}...${address.slice(-4)}`;
+          connectBtn.innerText = '✅ متصل';
+          connectBtn.style.background = '#00FF00';
+        } catch (error) {
+          alert('تم رفض الاتصال');
+        }
+      } else {
+        alert('افتح الموقع من داخل تطبيق Trust Wallet > DApp Browser');
+      }
+    };
+  </script>
+
+</body>
+</html>
